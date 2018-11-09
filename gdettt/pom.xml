@@ -57,20 +57,18 @@
             <artifactId>maven-surefire-plugin</artifactId>
             <version>2.22.0</version>
          </plugin>
-         <!--
          <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>exec-maven-plugin</artifactId>
             <version>1.6.0</version>
             <configuration>
                <includePluginDependencies>true</includePluginDependencies>
-               <mainClass>org.compass.gdet.Demo</mainClass>
+               <mainClass>org.compass.gdet.GitHubAPIDemo</mainClass>
                <arguments>
                   <argument>arg1</argument>
                </arguments>
             </configuration>
          </plugin>
-         -->
       </plugins>
    </build>
 
