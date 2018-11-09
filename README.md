@@ -11,6 +11,14 @@ login=<username>
 password=<password>
 ```
 
+or with an OAuth token obtainable [here](https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/) like the following:
+
+```
+oauth=<OAuth Token>
+```
+
+Note: You'll have to use an OAuth token if you have 2FA enabled!
+
 Once this is in place, you're good to go!
 
 # Running GDET
