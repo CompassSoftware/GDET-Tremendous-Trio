@@ -1,4 +1,5 @@
 package org.compass.gdet;
+import org.kohsuke.github.*;
 
 public class GithubDataExtractionTool
 {
