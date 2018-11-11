@@ -20,17 +20,29 @@ public class GithubWriter extends Writer {
       }
    }
 
-   /*public void append( char c ) {
-      writeWithThis = writeWithThis.append(c);
+   public Writer append( char c ) {
+      try {
+         writeWithThis = writeWithThis.append(c);
+      } finally {
+         return this.writeWithThis;
+      }
    }
 
-   public void append( CharSequence csq ) {
-      writeWithThis = writeWithThis.append(csq);
+   public Writer append( CharSequence csq ) {
+      try {
+         writeWithThis = writeWithThis.append(csq);
+      } finally {
+         return this.writeWithThis;
+      }
    }
 
-   public void append( CharSequence csq, int start, int end ) {
-      writeWithThis = writeWithThis.append(csq, start, end);
-   }*/
+   public Writer append( CharSequence csq, int start, int end ) {
+      try {
+         writeWithThis = writeWithThis.append(csq, start, end);
+      } finally {
+         return this.writeWithThis;
+      }
+   }
 
    public void close() {
       try {
