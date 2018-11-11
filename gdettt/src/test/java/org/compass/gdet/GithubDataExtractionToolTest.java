@@ -1,5 +1,6 @@
 package org.compass.gdet;
 
+import org.kohsuke.github.*;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -26,5 +27,37 @@ public class GithubDataExtractionToolTest
   public void shouldHaveAValidConnection() {
     GithubDataExtractionTool gdet = new GithubDataExtractionTool();
     assertTrue(gdet.checkConnection());
+  }
+
+  /*
+  * A basic test for our getRepository method.  Should return a valid repository
+  * for this repository.
+  */
+  @Test
+  public void shouldReturnAValidRepository() {
+    GithubDataExtractionTool gdet = new GithubDataExtractionTool();
+    GHRepository repo =
+      gdet.getRepository("CompassSoftware/GDET-Tremendous-Trio");
+    assertTrue(repo != null);
+    assertTrue(repo instanceof GHRepository);
+    assertTrue(repo.getName().equals("GDET-Tremendous-Trio"));
+    assertTrue(repo.getOwnerName().equals("CompassSoftware"));
+  }
+
+  /*
+  * A basic test for our getRepositoryMetaData method.  Should return a
+  * formatted metadata string for this repository.
+  */
+  @Test
+  public void shouldReturnACorrectlyFormattedString() {
+    GithubDataExtractionTool gdet = new GithubDataExtractionTool();
+    GHRepository repo =
+      gdet.getRepository("CompassSoftware/GDET-Tremendous-Trio");
+    String expectedOutput = "--------------------------------\n" +
+      "GDET-Tremendous-Trio\n" +
+      "Owned by: CompassSoftware\n" +
+      "--------------------------------\n";
+    assertTrue(GithubDataExtractionTool.getRepositoryMetaData(repo).equals(
+      expectedOutput));
   }
 }

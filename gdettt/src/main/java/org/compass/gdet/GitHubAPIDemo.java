@@ -13,8 +13,7 @@ public class GitHubAPIDemo {
     GHRepository repo = git.getRepository(
       "CompassSoftware/GDET-Tremendous-Trio");
     if (repo != null) {
-      System.out.printf("Repository: %s\n", repo.getName());
-      System.out.printf("Owned by: %s\n", repo.getOwnerName());
+      System.out.print(GithubDataExtractionTool.getRepositoryMetaData(repo));
     }
   }
 }

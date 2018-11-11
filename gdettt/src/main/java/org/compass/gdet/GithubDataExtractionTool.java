@@ -56,11 +56,32 @@ public class GithubDataExtractionTool
   *   GHRepository - a Github repository object if successful, null if not.
   */
   public GHRepository getRepository(String reponame) {
+    assert(checkConnection());
     try {
       return github.getRepository(reponame);
     }
     catch (IOException e) {
       return null;
     }
+  }
+
+  /**getRepositoryMetaData
+  * This method will return a string representation of the repository's details.
+  *
+  * @params:
+  *   repo - a GHRepository object to get metadata from
+  *
+  * @return:
+  *   string - a foratted stirng representation of the repo's metadata
+  */
+  public static String getRepositoryMetaData(GHRepository repo) {
+    String response = "";
+    response += String.format("%32s\n", "").replace(" ", "-");
+    if (repo != null) {
+      response += repo.getName() + "\n";
+      response += String.format("Owned by: %s\n", repo.getOwnerName());
+    }
+    response += String.format("%32s\n", "").replace(" ", "-");
+    return response;
   }
 }
