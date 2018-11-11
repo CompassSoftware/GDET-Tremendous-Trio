@@ -19,8 +19,8 @@ public class GithubWriter extends Writer {
 
          }
       } catch ( Exception e ) {
-         throw new InputMismatchException( "Unsupported or Invalid Writer Class: " \
-            + writerClass.getTypeName() + "\nDetails:\n" + e.getStackTrace() );
+         throw new InputMismatchException( "Unsupported or Invalid Writer Class: " +
+             writerClass.getTypeName() + "\nDetails:\n" + e.getStackTrace() );
       }
    }
 
