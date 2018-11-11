@@ -15,8 +15,12 @@ public class GithubWriter extends Writer {
    public GithubWriter( Class writerClass ) throws Exception {
       try {
          writeWithThis = (Writer) writerClass.newInstance();
+         if ( writeWithThis instanceof OutputStreamWriter ) {
+
+         }
       } catch ( Exception e ) {
-         throw e;
+         throw new InputMismatchException( "Unsupported or Invalid Writer Class: " \
+            + writerClass.getTypeName() + "\nDetails:\n" + e.getStackTrace() );
       }
    }
 
