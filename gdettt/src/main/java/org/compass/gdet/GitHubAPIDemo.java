@@ -14,6 +14,9 @@ public class GitHubAPIDemo {
       "CompassSoftware/GDET-Tremendous-Trio");
     if (repo != null) {
       System.out.print(GithubDataExtractionTool.getRepositoryMetaData(repo));
+      List<GHCommit> commits =
+        GithubDataExtractionTool.getCommits(repo);
+      System.out.print(GithubDataExtractionTool.commitsToString(commits));
     }
   }
 }

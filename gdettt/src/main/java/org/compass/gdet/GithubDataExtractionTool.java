@@ -69,6 +69,61 @@ public class GithubDataExtractionTool
     }
   }
 
+  /**getCommits
+  * This method will try to get a list of commits for a given repository.
+  *
+  * @params:
+  *   repo - the GHRepository object to get commits from.
+  *
+  * @return:
+  *   PagedIterable<GHCommit> - an iterable containing the commits for this repo
+  *     or null if a list could not be found.
+  */
+  public static List<GHCommit> getCommits(GHRepository repo) {
+    return repo.listCommits().asList();
+  }
+
+  /**getCommitShortInfo
+  * This method will try to get the shortInfo object for a given commit.
+  *
+  * @params:
+  *   commit - the GHCommit object to get the shortinfo from.
+  *
+  * @return:
+  *   GHCommit.shortInfo - the shortInfo object from the GHCommit.
+  */
+  public static GHCommit.ShortInfo getCommitShortInfo(GHCommit commit) {
+    try {
+      return commit.getCommitShortInfo();
+    }
+    catch (IOException e){
+      return null;
+    }
+  }
+
+  /**commitsToString
+  * conversta a list of commits to a formatted string representing the commits.
+  *
+  * @params:
+  *   commits - a List of commits to get a formatted string for.
+  *
+  * @return:
+  *   string - a formatted string representation of the commit.
+  */
+  public static String commitsToString(List<GHCommit> commits) {
+    String response = "";
+    for (GHCommit commit : commits) {
+      response += String.format("%32s\n", "").replace(" ", "-");
+      GHCommit.ShortInfo cinfo =
+        GithubDataExtractionTool.getCommitShortInfo(commit);
+      response += cinfo.getAuthor().getName() + "\n";
+      response += cinfo.getCommitDate() + "\n";
+      response += cinfo.getMessage() + "\n";
+      response += String.format("%32s\n\n", "").replace(" ", "-");
+    }
+    return response;
+  }
+
   /**getRepositoryMetaData
   * This method will return a string representation of the repository's details.
   *
