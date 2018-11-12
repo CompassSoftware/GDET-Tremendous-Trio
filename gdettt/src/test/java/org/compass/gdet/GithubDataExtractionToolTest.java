@@ -2,6 +2,7 @@ package org.compass.gdet;
 
 import org.kohsuke.github.*;
 import org.junit.jupiter.api.*;
+import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -59,5 +60,65 @@ public class GithubDataExtractionToolTest
       "--------------------------------\n";
     assertTrue(GithubDataExtractionTool.getRepositoryMetaData(repo).equals(
       expectedOutput));
+  }
+
+  /*
+  * A basic test for our getCommits method.  Should return a list of valid
+  * commits.
+  */
+  @Test
+  public void shouldReturnAListOfValidCommits() {
+    GithubDataExtractionTool gdet = new GithubDataExtractionTool();
+    GHRepository repo =
+      gdet.getRepository("CompassSoftware/GDET-Tremendous-Trio");
+    List<GHCommit> commits = GithubDataExtractionTool.getCommits(repo);
+    for (GHCommit commit : commits) {
+      assertTrue(commit instanceof GHCommit);
+      assertTrue(commit != null);
+    }
+    assertTrue(commits.size() > 0);
+  }
+
+  /*
+  * A basic test for our getCommitShortInfo method.  Should get a valid
+  * GHCommit.ShortInfo object for a given commit.
+  */
+  @Test
+  public void shouldGetValidCommitShortInfo() {
+    GithubDataExtractionTool gdet = new GithubDataExtractionTool();
+    GHRepository repo =
+      gdet.getRepository("CompassSoftware/GDET-Tremendous-Trio");
+    List<GHCommit> commits = GithubDataExtractionTool.getCommits(repo);
+    GHCommit commit = commits.get(0);
+    GHCommit.ShortInfo info =
+      GithubDataExtractionTool.getCommitShortInfo(commit);
+    assertTrue(info != null);
+    assertTrue(info.getAuthor() != null);
+  }
+
+  /*
+  * A basic test for our commitsToString method.  Should get a valid formatted
+  * string representation of our commit list.
+  */
+  @Test
+  public void shouldGetAFormattedCommitString() {
+    GithubDataExtractionTool gdet = new GithubDataExtractionTool();
+    GHRepository repo =
+      gdet.getRepository("CompassSoftware/GDET-Tremendous-Trio");
+    List<GHCommit> commits = GithubDataExtractionTool.getCommits(repo);
+    List<GHCommit> commitSublist = commits.subList(commits.size() - 2,
+      commits.size());
+    String result = GithubDataExtractionTool.commitsToString(commitSublist);
+    String expected = "--------------------------------\n" +
+      "Taylor Edwards\n" +
+      "Wed Nov 07 14:38:37 GMT 2018\n" +
+      "Initial Project Setup\n" +
+      "--------------------------------\n\n" +
+      "--------------------------------\n" +
+      "Jay Fenwick\n" +
+      "Mon Nov 05 14:08:28 GMT 2018\n" +
+      "Initial commit\n" +
+      "--------------------------------\n\n";
+    assertTrue(expected.equals(result));
   }
 }

@@ -17,13 +17,6 @@ public class GitHubAPIDemo {
       List<GHCommit> commits =
         GithubDataExtractionTool.getCommits(repo);
       System.out.print(GithubDataExtractionTool.commitsToString(commits));
-      // for (GHCommit commit : commits) {
-      //   GHCommit.ShortInfo cinfo =
-      //     GithubDataExtractionTool.getCommitShortInfo(commit);
-      //   System.out.println(cinfo.getMessage());
-      //   System.out.println(cinfo.getAuthor());
-      //   System.out.println(cinfo.getCommitDate());
-      // }
     }
   }
 }
