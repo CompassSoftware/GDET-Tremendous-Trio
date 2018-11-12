@@ -17,7 +17,7 @@ public class GithubDataExtractionTool
   {
     try {
       github = GitHub.connect();
-      outputHandler = new GDETOutputHandler( java.io.OutputStreamWriter.class );
+      outputController = new GDETOutputHandler( java.io.OutputStreamWriter.class );
     }
     catch (IOException e) {
       System.err.println("Could not access ~/.github with exception " + e);
