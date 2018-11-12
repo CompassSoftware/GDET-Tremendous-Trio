@@ -6,6 +6,7 @@ import java.util.List;
 public class GithubDataExtractionTool
 {
   private GitHub github;
+  private GDETOutputHandler outputController;
 
   /**Constructor
   * This constructor will try to establish a connection to gthub with the
@@ -16,9 +17,12 @@ public class GithubDataExtractionTool
   {
     try {
       github = GitHub.connect();
+      outputController = new GDETOutputHandler( java.io.OutputStreamWriter.class );
     }
     catch (IOException e) {
-      System.out.println("Could not access ~/.github with exception " + e);
+      System.err.println("Could not access ~/.github with exception " + e);
+    } catch (Exception ex) {
+      ex.printStackTrace();
     }
   }
 
