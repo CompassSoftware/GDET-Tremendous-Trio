@@ -97,7 +97,7 @@ public class GithubDataExtractionToolTest
   }
 
   /*
-  * A basic test for our commitsToString method.  Should get a valid formatted
+  * A basic test for our commitToString method.  Should get a valid formatted
   * string representation of our commit list.
   */
   @Test
@@ -108,7 +108,10 @@ public class GithubDataExtractionToolTest
     List<GHCommit> commits = GithubDataExtractionTool.getCommits(repo);
     List<GHCommit> commitSublist = commits.subList(commits.size() - 2,
       commits.size());
-    String result = GithubDataExtractionTool.commitsToString(commitSublist);
+    String result = "";
+    for (GHCommit commit : commitSublist) {
+      result += GithubDataExtractionTool.commitToString(commit);
+    }
     String expected = "--------------------------------\n" +
       "Taylor Edwards\n" +
       "Wed Nov 07 14:38:37 GMT 2018\n" +
@@ -119,6 +122,46 @@ public class GithubDataExtractionToolTest
       "Mon Nov 05 14:08:28 GMT 2018\n" +
       "Initial commit\n" +
       "--------------------------------\n\n";
+    assertTrue(expected.equals(result));
+  }
+
+  /*
+  * A basic test for our getIssues method.  Should get a list of valid issues.
+  */
+  @Test
+  public void shouldGetListOfIssues() {
+    GithubDataExtractionTool gdet = new GithubDataExtractionTool();
+    GHRepository repo =
+      gdet.getRepository("CompassSoftware/GDET-Tremendous-Trio");
+    List<GHIssue> issues = GithubDataExtractionTool.getIssues(repo);
+    for (GHIssue issue : issues) {
+      assertTrue(issue instanceof GHIssue);
+      assertTrue(issue != null);
+    }
+    assertTrue(issues.size() > 0);
+  }
+
+  /*
+  * A basic test for our issueToString method.  Should get a formatted string
+  * for an issue.
+  */
+  @Test
+  public void shouldGetCommitString() {
+    GithubDataExtractionTool gdet = new GithubDataExtractionTool();
+    GHRepository repo =
+      gdet.getRepository("CompassSoftware/GDET-Tremendous-Trio");
+    List<GHIssue> issues = GithubDataExtractionTool.getIssues(repo);
+    GHIssue testIssue = null;
+    for (GHIssue issue: issues) {
+      if (issue.getNumber() == 1) {
+        testIssue = issue;
+      }
+    }
+    String result = GithubDataExtractionTool.issueToString(testIssue);
+    String expected = "--------------------------------\n" +
+      "#1 Research api.github.com\n" +
+      "Jay Fenwick\n" +
+      "--------------------------------\n";
     assertTrue(expected.equals(result));
   }
 }
