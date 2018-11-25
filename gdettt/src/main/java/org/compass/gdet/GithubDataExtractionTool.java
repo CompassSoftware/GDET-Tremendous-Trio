@@ -69,6 +69,19 @@ public class GithubDataExtractionTool
     }
   }
 
+  /**getIssues
+  * This method will try to get a list of all issues for a given repository.
+  *
+  * @params:
+  *   repo - the GHRepository object to get Issues from
+  *
+  * @return:
+  *   List<GHIssue> - a list of the GHIssues queried or null if the query fails.
+  */
+  public static List<GHIssue> getIssues(GHRepository repo) {
+    return repo.listIssues(GHIssueState.ALL).asList();
+  }
+
   /**getCommits
   * This method will try to get a list of commits for a given repository.
   *
@@ -76,7 +89,7 @@ public class GithubDataExtractionTool
   *   repo - the GHRepository object to get commits from.
   *
   * @return:
-  *   PagedIterable<GHCommit> - an iterable containing the commits for this repo
+  *   List<GHCommit> - an iterable containing the commits for this repo
   *     or null if a list could not be found.
   */
   public static List<GHCommit> getCommits(GHRepository repo) {
@@ -101,26 +114,47 @@ public class GithubDataExtractionTool
     }
   }
 
-  /**commitsToString
-  * conversta a list of commits to a formatted string representing the commits.
+  /*issueToSTring
+  * converts a given GHCommit to a stirng.
   *
   * @params:
-  *   commits - a List of commits to get a formatted string for.
+  *   issue - the issue to convert to a string
+  *
+  * @return:
+  *   string - a string representation of the issue.
+  */
+  public static String issueToString(GHIssue issue) {
+    try {
+      String response = "";
+      response += String.format("%32s\n", "").replace(" ", "-");
+      response += "#" + issue.getNumber() + " " + issue.getTitle() + "\n";
+      response += issue.getUser().getName() + "\n";
+      response += String.format("%32s\n", "").replace(" ", "-");
+      return response;
+    }
+    catch (IOException e) {
+      return "";
+    }
+  }
+
+  /**commitsToString
+  * converts a commit to a formatted string representing the commit.
+  *
+  * @params:
+  *   commit - a List of commits to get a formatted string for.
   *
   * @return:
   *   string - a formatted string representation of the commit.
   */
-  public static String commitsToString(List<GHCommit> commits) {
+  public static String commitToString(GHCommit commit) {
     String response = "";
-    for (GHCommit commit : commits) {
-      response += String.format("%32s\n", "").replace(" ", "-");
-      GHCommit.ShortInfo cinfo =
-        GithubDataExtractionTool.getCommitShortInfo(commit);
-      response += cinfo.getAuthor().getName() + "\n";
-      response += cinfo.getCommitDate() + "\n";
-      response += cinfo.getMessage() + "\n";
-      response += String.format("%32s\n\n", "").replace(" ", "-");
-    }
+    response += String.format("%32s\n", "").replace(" ", "-");
+    GHCommit.ShortInfo cinfo =
+      GithubDataExtractionTool.getCommitShortInfo(commit);
+    response += cinfo.getAuthor().getName() + "\n";
+    response += cinfo.getCommitDate() + "\n";
+    response += cinfo.getMessage() + "\n";
+    response += String.format("%32s\n\n", "").replace(" ", "-");
     return response;
   }
 
