@@ -78,6 +78,22 @@ public class GithubDataExtractionToolTest
     }
     assertTrue(commits.size() > 0);
   }
+    /*
+  * A basic test for our getCommitComment method.  Should return a list of valid
+  * commit comments.
+  */
+  @Test
+  public void shouldReturnAListOfValidCommitComments() {
+    GithubDataExtractionTool gdet = new GithubDataExtractionTool();
+    GHRepository repo =
+      gdet.getRepository("CompassSoftware/GDET-Tremendous-Trio");
+    List<GHCommitComment> cComments = GithubDataExtractionTool.getCommitComments(repo);
+    for (GHCommitComment cComment : cComments) {
+      assertTrue(cComment instanceof GHCommitComment);
+      assertTrue(cComment != null);
+    }
+    assertTrue(cComments.size() > 0);
+  }
 
   /*
   * A basic test for our getCommitShortInfo method.  Should get a valid
