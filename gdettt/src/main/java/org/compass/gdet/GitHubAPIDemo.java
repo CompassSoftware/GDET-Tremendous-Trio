@@ -21,8 +21,15 @@ public class GitHubAPIDemo {
       System.out.print(endSection);
       List<GHCommit> commits =
         GithubDataExtractionTool.getCommits(repo);
+      List<GHCommitComment> cComments =
+	      GithubDataExtractionToool.getCommitComments(repo);
       for (GHCommit commit : commits) {
         System.out.print(GithubDataExtractionTool.commitToString(commit));
+
+      }
+      for(GHCommitComment commitcomment : cComments) {
+
+     	System.out.print(GithubDataExtractionTool.commitCommentToString(commitcomment));
       }
       System.out.print(startSection);
       System.out.println("ISUES");

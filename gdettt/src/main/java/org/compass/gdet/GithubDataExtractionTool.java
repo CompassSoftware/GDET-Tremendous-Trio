@@ -88,6 +88,17 @@ public class GithubDataExtractionTool
   * @params:
   *   repo - the GHRepository object to get commits from.
   *
+  *   @return:
+  *   List<GHCommitComment> - an iterable containing the commit comments for this repo
+  *   or null if a list could not be found
+  */
+  public static List<GHCommitComment> getCommitComments(GHRepository repo)
+  {
+	  return repo.listCommitComments().asList();
+  }
+
+ /*
+  *
   * @return:
   *   List<GHCommit> - an iterable containing the commits for this repo
   *     or null if a list could not be found.
@@ -95,7 +106,7 @@ public class GithubDataExtractionTool
   public static List<GHCommit> getCommits(GHRepository repo) {
     return repo.listCommits().asList();
   }
-
+ 
   /**getCommitShortInfo
   * This method will try to get the shortInfo object for a given commit.
   *
@@ -157,7 +168,25 @@ public class GithubDataExtractionTool
     response += String.format("%32s\n\n", "").replace(" ", "-");
     return response;
   }
-
+  /**commitsCommentToString
+  * converts a commitComments to a formatted string representing the commit.
+  *
+  * @params:
+  *   commit - a List of commitComments to get a formatted string for.
+  *
+  * @return:
+  *   string - a formatted string representation of the commit.
+  */
+  public static String commitCommentToString(GHCommitComment cComment) {
+    String response = "adsfadsfadsfasdfdsfasf";
+    response += String.format("%32s\n", "").replace(" ", "-");
+    response += cComment.getUser().getName() + "\n";
+    response += cComment.getCommit() + "\n";
+    response += cComment.getBody() + "\n";
+    response += String.format("%32s\n\n", "").replace(" ", "-");
+    return response;
+  }
+ 
   /**getRepositoryMetaData
   * This method will return a string representation of the repository's details.
   *
