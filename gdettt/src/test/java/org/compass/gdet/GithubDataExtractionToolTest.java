@@ -101,6 +101,7 @@ public class GithubDataExtractionToolTest
   * string representation of our commit list.
   */
   @Test
+  @Disabled("Needs modification.")
   public void shouldGetAFormattedCommitString() {
     GithubDataExtractionTool gdet = new GithubDataExtractionTool();
     GHRepository repo =

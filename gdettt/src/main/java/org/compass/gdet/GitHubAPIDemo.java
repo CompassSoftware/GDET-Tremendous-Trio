@@ -1,36 +1,58 @@
 package org.compass.gdet;
 import org.kohsuke.github.*;
+import java.util.stream.*;
 import java.util.List;
 
 public class GitHubAPIDemo {
-  public static void main( String[] args ) {
-    System.out.println("GitHub Data Extration Tool Demo");
-    GithubDataExtractionTool git = new GithubDataExtractionTool();
-    if (!git.checkConnection()) {
-      System.out.println("Error Establishing Connection");
-    }
-    System.out.println("Successfully Established Connection");
-    GHRepository repo = git.getRepository(
-      "CompassSoftware/GDET-Tremendous-Trio");
-    if (repo != null) {
-      System.out.print(GithubDataExtractionTool.getRepositoryMetaData(repo));
-      String startSection = String.format("\n\n%32s\n", "").replace(" ", "*");
-      String endSection = String.format("%32s\n\n\n", "").replace(" ", "*");
-      System.out.print(startSection);
-      System.out.println("COMMITS");
-      System.out.print(endSection);
-      List<GHCommit> commits =
-        GithubDataExtractionTool.getCommits(repo);
-      for (GHCommit commit : commits) {
-        System.out.print(GithubDataExtractionTool.commitToString(commit));
+   public static void main( String[] args ) {
+      System.out.println("GitHub Data Extration Tool Demo");
+      GithubDataExtractionTool git = new GithubDataExtractionTool();
+      if (!git.checkConnection()) {
+         System.out.println("Error Establishing Connection");
       }
-      System.out.print(startSection);
-      System.out.println("ISUES");
-      System.out.print(endSection);
-      List<GHIssue> issues = GithubDataExtractionTool.getIssues(repo);
-      for (GHIssue issue : issues) {
-        System.out.print(GithubDataExtractionTool.issueToString(issue));
+      System.out.println("Successfully Established Connection");
+      GHRepository repo = git.getRepository(
+            "CompassSoftware/GDET-Tremendous-Trio");
+      if (repo != null) {
+         System.out.print(GithubDataExtractionTool.getRepositoryMetaData(repo));
+         String startSection = String.format("\n\n%32s\n", "").replace(" ", "*");
+         String endSection = String.format("%32s\n\n\n", "").replace(" ", "*");
+         System.out.print(startSection);
+         System.out.println("COMMITS");
+         System.out.print(endSection);
+         List<GHCommit> commits =
+            GithubDataExtractionTool.getCommits(repo);
+         for (GHCommit commit : commits) {
+            System.out.print(GithubDataExtractionTool.commitToString(commit));
+         }
+         System.out.print(startSection);
+         System.out.println("ISUES");
+         System.out.print(endSection);
+         List<GHIssue> issues = GithubDataExtractionTool.getIssues(repo);
+         for (GHIssue issue : issues) {
+            System.out.print(GithubDataExtractionTool.issueToString(issue));
+         }
+         /////
+         System.out.println("-#-#-#-#-");
+         try {
+            GHPersonSet<GHUser> collaborators = repo.getCollaborators();
+
+            collaborators.stream()
+               .map( c -> {
+                     try { 
+                     c.listEvents().asList()
+                     .stream()
+                     .filter( evt -> evt.getRepository().equals( repo ) )
+                     .map( evt -> evt.getPayload( GHEventPayload.class ) );
+                     } catch ( java.io.IOException e ) {
+                     System.err.println("err");
+                     }
+                     }
+                   )
+               .peek( System.out::println );
+         } catch ( java.io.IOException e ) {
+            System.out.println("Error listing contributions for contributors");
+         }
       }
-    }
-  }
+   }
 }
