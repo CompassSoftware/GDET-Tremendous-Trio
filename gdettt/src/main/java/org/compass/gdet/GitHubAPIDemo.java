@@ -27,9 +27,10 @@ public class GitHubAPIDemo {
         System.out.print(GithubDataExtractionTool.commitToString(commit));
 
       }
-      for(GHCommitComment commitcomment : cComments) {
+      
+      for(GHCommitComment cComment : cComments) {
 
-     	System.out.print(GithubDataExtractionTool.commitCommentToString(commitcomment));
+     	System.out.print(GithubDataExtractionTool.commitCommentToString(cComment));
       }
       System.out.print(startSection);
       System.out.println("ISUES");
