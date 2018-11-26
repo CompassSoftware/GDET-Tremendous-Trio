@@ -25,7 +25,7 @@ public class GitHubAPIDemo {
         System.out.print(GithubDataExtractionTool.commitToString(commit));
       }
       System.out.print(startSection);
-      System.out.println("ISUES");
+      System.out.println("ISSUES");
       System.out.print(endSection);
       List<GHIssue> issues = GithubDataExtractionTool.getIssues(repo);
       for (GHIssue issue : issues) {
