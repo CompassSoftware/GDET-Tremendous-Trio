@@ -161,7 +161,7 @@ public class GithubDataExtractionToolTest
     String expected = "--------------------------------\n" +
       "#1 Research api.github.com\n" +
       "Jay Fenwick\n" +
-      "--------------------------------\n";
+      "--------------------------------\n\n";
     assertTrue(expected.equals(result));
   }
 }
