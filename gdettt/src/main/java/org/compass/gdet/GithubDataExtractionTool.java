@@ -106,7 +106,7 @@ public class GithubDataExtractionTool
   public static List<GHCommit> getCommits(GHRepository repo) {
     return repo.listCommits().asList();
   }
- 
+
   /**getCommitShortInfo
   * This method will try to get the shortInfo object for a given commit.
   *
@@ -140,7 +140,7 @@ public class GithubDataExtractionTool
       response += String.format("%32s\n", "").replace(" ", "-");
       response += "#" + issue.getNumber() + " " + issue.getTitle() + "\n";
       response += issue.getUser().getName() + "\n";
-      response += String.format("%32s\n", "").replace(" ", "-");
+      response += String.format("%32s\n\n", "").replace(" ", "-");
       return response;
     }
     catch (IOException e) {
@@ -178,7 +178,11 @@ public class GithubDataExtractionTool
   *   string - a formatted string representation of the commit.
   */
   public static String commitCommentToString(GHCommitComment cComment) {
+<<<<<<< HEAD
       try {
+=======
+    try {
+>>>>>>> e40899d292aa56e75f6dd7d5e258ad787ee48d6e
       String response = "";
       response += String.format("%32s\n", "").replace(" ", "-");
       response += cComment.getUser().getLogin() + "\n";
@@ -191,8 +195,13 @@ public class GithubDataExtractionTool
     catch (IOException e) {
       return "";
     }
+<<<<<<< HEAD
  }  
  
+=======
+  }
+
+>>>>>>> e40899d292aa56e75f6dd7d5e258ad787ee48d6e
   /**getRepositoryMetaData
   * This method will return a string representation of the repository's details.
   *
