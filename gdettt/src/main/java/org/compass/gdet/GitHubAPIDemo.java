@@ -13,10 +13,12 @@ public class GitHubAPIDemo {
     GHRepository repo = git.getRepository(
       "CompassSoftware/GDET-Tremendous-Trio");
     if (repo != null) {
+      
       System.out.print(GithubDataExtractionTool.getRepositoryMetaData(repo));
       String startSection = String.format("\n\n%32s\n", "").replace(" ", "*");
       String endSection = String.format("%32s\n\n\n", "").replace(" ", "*");
       System.out.print(startSection);
+      System.out.println();
       System.out.println("COMMITS");
       System.out.print(endSection);
       List<GHCommit> commits =
@@ -27,12 +29,19 @@ public class GitHubAPIDemo {
         System.out.print(GithubDataExtractionTool.commitToString(commit));
 
       }
-      
-      for(GHCommitComment cComment : cComments) {
 
-     	System.out.print(GithubDataExtractionTool.commitCommentToString(cComment));
-      }
       System.out.print(startSection);
+      System.out.println();
+      System.out.println("COMMIT COMMENTS");
+      System.out.print(endSection);
+      List<GHCommitComment> cComments =
+      GithubDataExtractionTool.getCommitComments(repo);
+      for(GHCommitComment cComment : cComments) {
+     	  System.out.print(GithubDataExtractionTool.commitCommentToString(cComment));
+      }
+
+      System.out.print(startSection);
+      System.out.print();
       System.out.println("ISUES");
       System.out.print(endSection);
       List<GHIssue> issues = GithubDataExtractionTool.getIssues(repo);

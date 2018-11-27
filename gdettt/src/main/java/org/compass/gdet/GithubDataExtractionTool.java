@@ -178,14 +178,20 @@ public class GithubDataExtractionTool
   *   string - a formatted string representation of the commit.
   */
   public static String commitCommentToString(GHCommitComment cComment) {
-    String response = "adsfadsfadsfasdfdsfasf";
-    response += String.format("%32s\n", "").replace(" ", "-");
-    response += cComment.getUser().getName() + "\n";
-    response += cComment.getCommit() + "\n";
-    response += cComment.getBody() + "\n";
-    response += String.format("%32s\n\n", "").replace(" ", "-");
-    return response;
-  }
+      try {
+      String response = "";
+      response += String.format("%32s\n", "").replace(" ", "-");
+      response += cComment.getUser().getLogin() + "\n";
+      response += "\nCommit Details:\n";
+      response += commitToString(cComment.getCommit());
+      response += cComment.getBody() + "\n";
+      response += String.format("%32s\n\n", "").replace(" ", "-");
+      return response;
+    }
+    catch (IOException e) {
+      return "";
+    }
+ }  
  
   /**getRepositoryMetaData
   * This method will return a string representation of the repository's details.
