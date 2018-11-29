@@ -184,22 +184,21 @@ epo, GHIssueState state)
     response += String.format("%32s\n\n", "").replace(" ", "-");
     return response;
   }
-  /**commitsCommentToString
-  * converts a commitComments to a formatted string representing the commit.
+  /**pullRequestToString
+  * converts a pull request to a formatted string representing the pull request.
   *
   * @params:
-  *   commit - a List of commitComments to get a formatted string for.
+  *   pr - a representation of a pull request to convert to a string
   *
   * @return:
-  *   string - a formatted string representation of the commit.
+  *   string - a formatted string representation of the pull request..
   */
-  public static String commitCommentToString(GHCommitComment cComment) {
+  public static String pullRequestToString(GHPullRequest pr) {
     try {
       String response = "";
       response += String.format("%32s\n", "").replace(" ", "-");
-      response += cComment.getUser().getLogin() + "\n";
-      response += "\nCommit Details:\n";
-      response += commitToString(cComment.getCommit());
+      response += "\nMerged By:\n";
+      response += pr.getMergedBy().get;
       response += cComment.getBody() + "\n";
       response += String.format("%32s\n\n", "").replace(" ", "-");
       return response;
