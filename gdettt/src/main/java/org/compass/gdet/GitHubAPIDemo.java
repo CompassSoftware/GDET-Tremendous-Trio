@@ -36,7 +36,7 @@ public class GitHubAPIDemo {
       List<GHCommitComment> cComments =
         GithubDataExtractionTool.getCommitComments(repo);
       for(GHCommitComment cComment : cComments) {
-     	  System.out.print(GithubDataExtractionTool.commitCommentToString(cComment));
+        System.out.print(GithubDataExtractionTool.commitCommentToString(cComment));
       }
 
       //Print Issues
