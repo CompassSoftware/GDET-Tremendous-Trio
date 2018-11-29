@@ -82,11 +82,11 @@ public class GithubDataExtractionTool
     return repo.listIssues(GHIssueState.ALL).asList();
   }
 
-  /**getCommits
-  * This method will try to get a list of commits for a given repository.
+  /**getCommitComments
+  * This method will try to get a list of commit comments for a given repository.
   *
   * @params:
-  *   repo - the GHRepository object to get commits from.
+  *   repo - the GHRepository object to get commits comments from.
   *
   *   @return:
   *   List<GHCommitComment> - an iterable containing the commit comments for this repo
@@ -95,6 +95,22 @@ public class GithubDataExtractionTool
   public static List<GHCommitComment> getCommitComments(GHRepository repo)
   {
 	  return repo.listCommitComments().asList();
+  }
+  /**getPullRequests
+  * This method will try to get a list of pull requests for a given reposito
+ry based on a given state..
+  *
+  * @params:
+  *   repo - the GHRepository object to get pull requests from.
+  *   state - the state of the pull requests you want
+  *   @return:
+  *   List<GHPullRequest> - an iterable containing the pull requests for this repo
+  *   or null if a list could not be found
+  */
+  public static List<GHPullRequest> getPullRequests(GHRepository r
+epo, GHIssueState state)
+  {
+          return repo.listPullRequests(state).asList();
   }
 
  /*
@@ -168,22 +184,21 @@ public class GithubDataExtractionTool
     response += String.format("%32s\n\n", "").replace(" ", "-");
     return response;
   }
-  /**commitsCommentToString
-  * converts a commitComments to a formatted string representing the commit.
+  /**pullRequestToString
+  * converts a pull request to a formatted string representing the pull request.
   *
   * @params:
-  *   commit - a List of commitComments to get a formatted string for.
+  *   pr - a representation of a pull request to convert to a string
   *
   * @return:
-  *   string - a formatted string representation of the commit.
+  *   string - a formatted string representation of the pull request..
   */
-  public static String commitCommentToString(GHCommitComment cComment) {
+  public static String pullRequestToString(GHPullRequest pr) {
     try {
       String response = "";
       response += String.format("%32s\n", "").replace(" ", "-");
-      response += cComment.getUser().getLogin() + "\n";
-      response += "\nCommit Details:\n";
-      response += commitToString(cComment.getCommit());
+      response += "\nMerged By:\n";
+      response += pr.getMergedBy().get;
       response += cComment.getBody() + "\n";
       response += String.format("%32s\n\n", "").replace(" ", "-");
       return response;
