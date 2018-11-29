@@ -29,16 +29,6 @@ public class GitHubAPIDemo {
         System.out.print(GithubDataExtractionTool.commitToString(commit));
       }
 
-      //Print Commit Comments
-      System.out.print(startSection);
-      System.out.println("COMMIT COMMENTS");
-      System.out.print(endSection);
-      List<GHCommitComment> cComments =
-        GithubDataExtractionTool.getCommitComments(repo);
-      for(GHCommitComment cComment : cComments) {
-        System.out.print(GithubDataExtractionTool.commitCommentToString(cComment));
-      }
-
       //Print Issues
       System.out.print(startSection);
       System.out.println("ISSUES");
@@ -47,6 +37,23 @@ public class GitHubAPIDemo {
       for (GHIssue issue : issues) {
         System.out.print(GithubDataExtractionTool.issueToString(issue));
       }
+
+      //Print Pull Requests
+      System.out.print(startSection);
+      System.out.println("Pull Requests");
+      System.out.print(endSection);
+
+      System.out.println("Open Pull Requests");
+      List<GHPullRequest> oprs = GithubDataExtractionTool.getPullRequests(repo, GHIssueState.OPEN);
+      for (GHPullRequest opr : oprs) {
+	  System.out.print(GithubDataExtractionTool.pullRequestToString(opr));
+      }
+      System.out.println("Closed Pull Requests");
+      List<GHPullRequest> cprs = GithubDataExtractionTool.getPullRequests(repo, GHIssueState.CLOSED);
+      for (GHPullRequest cpr : cprs) {
+          System.out.print(GithubDataExtractionTool.pullRequestToString(cpr));
+      }
+
     }
   }
 }

@@ -94,7 +94,7 @@ public class GithubDataExtractionTool
   */
   public static List<GHCommitComment> getCommitComments(GHRepository repo)
   {
-	  return repo.listCommitComments().asList();
+	  	return repo.listCommitComments().asList();
   }
   /**getPullRequests
   * This method will try to get a list of pull requests for a given reposito
@@ -107,12 +107,10 @@ ry based on a given state..
   *   List<GHPullRequest> - an iterable containing the pull requests for this repo
   *   or null if a list could not be found
   */
-  public static List<GHPullRequest> getPullRequests(GHRepository r
-epo, GHIssueState state)
+  public static List<GHPullRequest> getPullRequests(GHRepository repo, GHIssueState state)
   {
           return repo.listPullRequests(state).asList();
   }
-
  /*
   *
   * @return:
@@ -189,7 +187,7 @@ epo, GHIssueState state)
   *
   * @params:
   *   pr - a representation of a pull request to convert to a string
-  *
+  *   state - the state of the pull request
   * @return:
   *   string - a formatted string representation of the pull request..
   */
@@ -197,13 +195,26 @@ epo, GHIssueState state)
     try {
       String response = "";
       response += String.format("%32s\n", "").replace(" ", "-");
+      response += "Additions: ";
+      for(int i = 0; i <= pr.getAdditions(); i++)
+      {
+	      response += "+";
+      }
+      response += "\nDeletions ";
+      for(int i = 0; i <= pr.getDeletions(); i++)
+      {
+              response += "-";
+      }
       response += "\nMerged By:\n";
-      response += pr.getMergedBy().get;
-      response += cComment.getBody() + "\n";
-      response += String.format("%32s\n\n", "").replace(" ", "-");
+      response += pr.getMergedBy().getName();
+      response += pr.getMergedAt() + "\n";
       return response;
     }
-    catch (IOException e) {
+    catch(IOException e)
+    {
+	return "";
+    }
+    catch (NullPointerException e) {
       return "";
     }
  }  
