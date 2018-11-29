@@ -140,6 +140,29 @@ public class GithubDataExtractionToolTest
       "--------------------------------\n\n";
     assertTrue(expected.equals(result));
   }
+    /*
+  * A basic test for our commitToString method.  Should get a valid formatted
+  * string representation of our commit list.
+  */
+  @Test
+  public void shouldGetAFormattedCommitCommentString() {
+    GithubDataExtractionTool gdet = new GithubDataExtractionTool();
+    GHRepository repo =
+      gdet.getRepository("CompassSoftware/GDET-Tremendous-Trio");
+    List<GHCommitComment> cComment = GithubDataExtractionTool.getCommitComments(repo);
+    String cString = GithubDataExtractionTool.commitCommentToString(cComment.get(0));
+    String expected = "--------------------------------\n" +
+  	"SupahSprinkle\n\n" +
+	"Commit Details:\n" +
+	"--------------------------------\n" +
+	"Gurney Buchanan\n" +
+	"Sat Nov 24 23:13:53 GMT 2018\n" +
+	"Added getIssues and issuesToString methods to handle issue information along with tests and demo\n" +
+	"--------------------------------\n\n" +
+	"This is a test of iss17\n" +
+	"--------------------------------\n\n";
+    assertTrue(expected.equals(cString));
+  }
 
   /*
   * A basic test for our getIssues method.  Should get a list of valid issues.
