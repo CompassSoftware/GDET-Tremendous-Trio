@@ -195,6 +195,9 @@ ry based on a given state..
     try {
       String response = "";
       response += String.format("%32s\n", "").replace(" ", "-");
+      response += "Merged By:\n";
+      response += pr.getMergedBy().getName();
+      response += pr.getMergedAt() + "\n";
       response += "Additions: ";
       for(int i = 0; i <= pr.getAdditions(); i++)
       {
@@ -205,9 +208,8 @@ ry based on a given state..
       {
               response += "-";
       }
-      response += "\nMerged By:\n";
-      response += pr.getMergedBy().getName();
-      response += pr.getMergedAt() + "\n";
+      response += "\nNumber of Commits: ";
+      response += pr.getCommits() + "\n";
       return response;
     }
     catch(IOException e)
