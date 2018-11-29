@@ -82,11 +82,11 @@ public class GithubDataExtractionTool
     return repo.listIssues(GHIssueState.ALL).asList();
   }
 
-  /**getCommits
-  * This method will try to get a list of commits for a given repository.
+  /**getCommitComments
+  * This method will try to get a list of commit comments for a given repository.
   *
   * @params:
-  *   repo - the GHRepository object to get commits from.
+  *   repo - the GHRepository object to get commits comments from.
   *
   *   @return:
   *   List<GHCommitComment> - an iterable containing the commit comments for this repo
@@ -95,6 +95,22 @@ public class GithubDataExtractionTool
   public static List<GHCommitComment> getCommitComments(GHRepository repo)
   {
 	  return repo.listCommitComments().asList();
+  }
+  /**getPullRequests
+  * This method will try to get a list of pull requests for a given reposito
+ry based on a given state..
+  *
+  * @params:
+  *   repo - the GHRepository object to get pull requests from.
+  *   state - the state of the pull requests you want
+  *   @return:
+  *   List<GHPullRequest> - an iterable containing the pull requests for this repo
+  *   or null if a list could not be found
+  */
+  public static List<GHPullRequest> getPullRequests(GHRepository r
+epo, GHIssueState state)
+  {
+          return repo.listPullRequests(state).asList();
   }
 
  /*
