@@ -30,3 +30,7 @@ Currently, GDET can be built and installed using the following command from the 
 And you can execute GDET using the following command from the gdettt directory:
 
 `mvn exec:java`
+
+# Known Issues
+
+Test may not run successfully on some older hardware, causing a build failure unless tests are skipped. This is due to JVM memory allocation. Some external discussion of this issue can be found [here](https://stackoverflow.com/a/33757854).
