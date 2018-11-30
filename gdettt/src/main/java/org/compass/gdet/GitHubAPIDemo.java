@@ -53,7 +53,6 @@ public class GitHubAPIDemo {
       for (GHPullRequest cpr : cprs) {
           System.out.print(GithubDataExtractionTool.pullRequestToString(cpr));
       }
-
     }
   }
 }

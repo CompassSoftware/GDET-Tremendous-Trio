@@ -202,7 +202,7 @@ ry based on a given state..
       response += "Merged Date:" + pr.getMergedAt() + "\n";
       response += "\nAdditions: ";
       response += pr.getAdditions(); 
-      response += "\nDeletions ";
+      response += "\nDeletions: ";
       response += pr.getDeletions();
       response += "\nNumber of Commits: ";
       response += pr.getCommits() + "\n";
