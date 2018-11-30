@@ -2,7 +2,7 @@ package org.compass.gdet;
 import org.kohsuke.github.*;
 import java.io.IOException;
 import java.util.List;
-
+import java.util.ArrayList;
 public class GithubDataExtractionTool
 {
   private GitHub github;
@@ -110,6 +110,50 @@ ry based on a given state..
   public static List<GHPullRequest> getPullRequests(GHRepository repo, GHIssueState state)
   {
           return repo.listPullRequests(state).asList();
+  }
+
+  /**getPullRequestComments
+  * This method will try to get a list of pull requests comments.
+  *
+  * @params:
+  *   repo - the GHRepository object to get pull requests from.
+  *   @return:
+  *   List<GHPullRequestReviewComment> - an iterable containing the pull requests for this repo
+  *   or null if a list could not be found
+  */
+  public static List<GHPullRequestReviewComment> getPullRequestComments(GHRepository repo)
+  {
+     List<GHPullRequest> prs = getPullRequests(repo, GHIssueState.ALL);
+     return getPullRequestComments(prs); 
+  }
+
+    /**getPullRequestComments
+  * This method will try to get a list of pull requests comments.
+  *
+  * @params:
+  *   repo - the GHRepository object to get pull requests from.
+  *   state - the state of the pull requests you want
+  *   @return:
+  *   List<GHPullRequestReviewComment> - an iterable containing the pull requests for this repo
+  *   or null if a list could not be found
+  */
+  public static List<GHPullRequestReviewComment> getPullRequestComments(List<GHPullRequest> prs)
+  {
+	try{	  
+	List<GHPullRequestReviewComment> prct = new ArrayList<GHPullRequestReviewComment>();
+
+	for(GHPullRequest pr : prs)
+	{
+		List<GHPullRequestReviewComment> prc = pr.listReviewComments().asList();
+		prct.addAll(prc);
+	}
+	return prct;
+	}
+	catch(IOException e)
+	{
+		return null;
+	}
+
   }
  /*
   *
