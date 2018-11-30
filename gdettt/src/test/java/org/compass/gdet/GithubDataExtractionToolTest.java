@@ -80,6 +80,22 @@ public class GithubDataExtractionToolTest
   }
 
   /*
+  * A basic test for our getPullRequests method.  Should get a list of valid issues.
+  */
+  @Test
+  public void shouldGetListPullRequests() {
+    GithubDataExtractionTool gdet = new GithubDataExtractionTool();
+    GHRepository repo =
+      gdet.getRepository("CompassSoftware/GDET-Tremendous-Trio");
+    List<GHPullRequest> prs = GithubDataExtractionTool.getPullRequests(repo,GHIssueState.ALL);
+    for (GHPullRequest pr : prs) {
+      assertTrue(pr instanceof GHPullRequest);
+      assertTrue(pr != null);
+    }
+    assertTrue(prs.size() > 0);
+  }
+
+  /*
   * A basic test for our getCommitShortInfo method.  Should get a valid
   * GHCommit.ShortInfo object for a given commit.
   */
