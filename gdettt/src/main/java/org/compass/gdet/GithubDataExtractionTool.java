@@ -2,6 +2,8 @@ package org.compass.gdet;
 import org.kohsuke.github.*;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
+import java.util.WeakHashMap;
 
 public class GithubDataExtractionTool
 {
@@ -97,7 +99,7 @@ public class GithubDataExtractionTool
 	  return repo.listCommitComments().asList();
   }
 
- /*
+ /* getCommits
   *
   * @return:
   *   List<GHCommit> - an iterable containing the commits for this repo
@@ -105,6 +107,54 @@ public class GithubDataExtractionTool
   */
   public static List<GHCommit> getCommits(GHRepository repo) {
     return repo.listCommits().asList();
+  }
+
+  /*getCommitCountPerUser
+  * Gets a list of all users who have committed to the repository along with
+  * the number of commits they've made.
+  *
+  * @params:
+  *   repo - the GHRepository object to get a list of commits from.
+  *
+  * @return:
+  *   Map<GHUser, Integer> - a map between all users that have committed to the
+  *     repository and the number of commits they've made.Returns an empty map
+  *     if an IOException is encountered.
+  */
+  public static Map<GHUser, Integer> getCommitCountPerUser(GHRepository repo) {
+    List<GHCommit> commits = getCommits(repo);
+    return getCommitCountPerUser(commits);
+  }
+
+  /*getCommitCountPerUser
+  * Gets a list of all users who have committed to the repository along with
+  * the number of commits they've made.
+  *
+  * @params:
+  *   commits - a list of commits to find the commits counts per user from.
+  *
+  * @return:
+  *   Map<GHUser, Integer> - a map between all users that have committed to the
+  *     repository and the number of commits they've made.  Returns an empty map
+  *     if an IOException is encountered.
+  */
+  public static Map<GHUser, Integer> getCommitCountPerUser(List<GHCommit> commits) {
+    try {
+      Map<GHUser, Integer> map = new WeakHashMap<GHUser, Integer>();
+      for (GHCommit commit : commits) {
+        GHUser committer = commit.getCommitter();
+        if (map.containsKey(committer)) {
+          map.put(committer, map.get(committer) + 1);
+        }
+        else {
+          map.put(committer, 1);
+        }
+      }
+      return map;
+    }
+    catch (IOException e) {
+      return new WeakHashMap<GHUser, Integer>();
+    }
   }
 
   /**getCommitShortInfo
@@ -121,6 +171,25 @@ public class GithubDataExtractionTool
       return commit.getCommitShortInfo();
     }
     catch (IOException e){
+      return null;
+    }
+  }
+
+  /*getGHUserNameWithFallback
+  * gets a GHUser's name or their login if their name is not set!
+  *
+  * @return the GHUser's name if it is set and login if not.  If an IOException
+  *   occurs, it will return null.
+  */
+  public static String getGHUserNameWithFallback(GHUser user) {
+    try {
+      String name = user.getName();
+      if (name == null) {
+        name = user.getLogin();
+      }
+      return name;
+    }
+    catch (IOException e) {
       return null;
     }
   }
@@ -191,7 +260,7 @@ public class GithubDataExtractionTool
     catch (IOException e) {
       return "";
     }
- }  
+ }
 
   /**getRepositoryMetaData
   * This method will return a string representation of the repository's details.
