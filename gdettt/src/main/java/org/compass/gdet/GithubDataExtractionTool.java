@@ -82,11 +82,36 @@ public class GithubDataExtractionTool
     return repo.listIssues(GHIssueState.ALL).asList();
   }
 
-  /**getCommits
-  * This method will try to get a list of commits for a given repository.
+  /**getCommitComments
+  * This method will try to get a list of commit comments for a given repository.
   *
   * @params:
-  *   repo - the GHRepository object to get commits from.
+  *   repo - the GHRepository object to get commits comments from.
+  *
+  *   @return:
+  *   List<GHCommitComment> - an iterable containing the commit comments for this repo
+  *   or null if a list could not be found
+  */
+  public static List<GHCommitComment> getCommitComments(GHRepository repo)
+  {
+	  	return repo.listCommitComments().asList();
+  }
+  /**getPullRequests
+  * This method will try to get a list of pull requests for a given reposito
+ry based on a given state..
+  *
+  * @params:
+  *   repo - the GHRepository object to get pull requests from.
+  *   state - the state of the pull requests you want
+  *   @return:
+  *   List<GHPullRequest> - an iterable containing the pull requests for this repo
+  *   or null if a list could not be found
+  */
+  public static List<GHPullRequest> getPullRequests(GHRepository repo, GHIssueState state)
+  {
+          return repo.listPullRequests(state).asList();
+  }
+ /*
   *
   * @return:
   *   List<GHCommit> - an iterable containing the commits for this repo
@@ -129,7 +154,7 @@ public class GithubDataExtractionTool
       response += String.format("%32s\n", "").replace(" ", "-");
       response += "#" + issue.getNumber() + " " + issue.getTitle() + "\n";
       response += issue.getUser().getName() + "\n";
-      response += String.format("%32s\n", "").replace(" ", "-");
+      response += String.format("%32s\n\n", "").replace(" ", "-");
       return response;
     }
     catch (IOException e) {
@@ -157,6 +182,41 @@ public class GithubDataExtractionTool
     response += String.format("%32s\n\n", "").replace(" ", "-");
     return response;
   }
+  /**pullRequestToString
+  * converts a pull request to a formatted string representing the pull request.
+  *
+  * @params:
+  *   pr - a representation of a pull request to convert to a string
+  *   state - the state of the pull request
+  * @return:
+  *   string - a formatted string representation of the pull request..
+  */
+  public static String pullRequestToString(GHPullRequest pr) {
+    try {
+      String response = "";
+      response += String.format("%64s\n", "").replace(" ", "-");
+      response += pr.getTitle() + "\n";
+      response += "Created By: "  + pr.getUser().getName() + "\n";
+      response += "Created Date: " + pr.getCreatedAt() + "\n";
+      response += "Merged By: " + pr.getMergedBy().getName() + "\n";
+      response += "Merged Date:" + pr.getMergedAt() + "\n";
+      response += "\nAdditions: ";
+      response += pr.getAdditions(); 
+      response += "\nDeletions: ";
+      response += pr.getDeletions();
+      response += "\nNumber of Commits: ";
+      response += pr.getCommits() + "\n";
+      response += String.format("%64s\n\n", "").replace(" ", "-");
+      return response;
+    }
+    catch(IOException e)
+    {
+	return "";
+    }
+    catch (NullPointerException e) {
+      return "";
+    }
+ }  
 
   /**getRepositoryMetaData
   * This method will return a string representation of the repository's details.

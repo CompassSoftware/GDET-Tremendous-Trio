@@ -80,6 +80,22 @@ public class GithubDataExtractionToolTest
   }
 
   /*
+  * A basic test for our getPullRequests method.  Should get a list of valid issues.
+  */
+  @Test
+  public void shouldGetListPullRequests() {
+    GithubDataExtractionTool gdet = new GithubDataExtractionTool();
+    GHRepository repo =
+      gdet.getRepository("CompassSoftware/GDET-Tremendous-Trio");
+    List<GHPullRequest> prs = GithubDataExtractionTool.getPullRequests(repo,GHIssueState.ALL);
+    for (GHPullRequest pr : prs) {
+      assertTrue(pr instanceof GHPullRequest);
+      assertTrue(pr != null);
+    }
+    assertTrue(prs.size() > 0);
+  }
+
+  /*
   * A basic test for our getCommitShortInfo method.  Should get a valid
   * GHCommit.ShortInfo object for a given commit.
   */
@@ -116,6 +132,7 @@ public class GithubDataExtractionToolTest
       "Taylor Edwards\n" +
       "Wed Nov 07 14:38:37 GMT 2018\n" +
       "Initial Project Setup\n" +
+
       "--------------------------------\n\n" +
       "--------------------------------\n" +
       "Jay Fenwick\n" +
@@ -123,6 +140,31 @@ public class GithubDataExtractionToolTest
       "Initial commit\n" +
       "--------------------------------\n\n";
     assertTrue(expected.equals(result));
+  }
+
+  /*
+  * A basic test for our pullRequestToString method.  Should get a valid formatted
+  * string representation of our commit list.
+  */
+  @Test
+  public void shouldGetAFormattedPullRequestString() {
+    GithubDataExtractionTool gdet = new GithubDataExtractionTool();
+    GHRepository repo =
+	  gdet.getRepository("CompassSoftware/GDET-Tremendous-Trio");
+    List<GHPullRequest> pr = GithubDataExtractionTool.getPullRequests(repo,GHIssueState.CLOSED);
+    String prString = GithubDataExtractionTool.pullRequestToString(pr.get(0));
+    String expected = 
+    "----------------------------------------------------------------\n" +
+    "fixed typo in demo\n" +
+    "Created By: Taylor\n" +
+    "Created Date: Mon Nov 26 04:30:47 GMT 2018\n" +
+    "Merged By: SupahSprinkle\n"+
+    "Merged Date:Mon Nov 26 04:31:23 GMT 2018\n\n"+
+    "Additions: 1\n"+
+    "Deletions: 1\n"+
+    "Number of Commits: 1\n"+
+    "----------------------------------------------------------------\n\n";
+    assertTrue(expected.equals(prString));
   }
 
   /*
@@ -161,7 +203,7 @@ public class GithubDataExtractionToolTest
     String expected = "--------------------------------\n" +
       "#1 Research api.github.com\n" +
       "Jay Fenwick\n" +
-      "--------------------------------\n";
+      "--------------------------------\n\n";
     assertTrue(expected.equals(result));
   }
 }
