@@ -194,22 +194,19 @@ ry based on a given state..
   public static String pullRequestToString(GHPullRequest pr) {
     try {
       String response = "";
-      response += String.format("%32s\n", "").replace(" ", "-");
-      response += "Merged By:\n";
-      response += pr.getMergedBy().getName();
-      response += pr.getMergedAt() + "\n";
-      response += "Additions: ";
-      for(int i = 0; i <= pr.getAdditions(); i++)
-      {
-	      response += "+";
-      }
+      response += String.format("%64s\n", "").replace(" ", "-");
+      response += pr.getTitle() + "\n";
+      response += "Created By: "  + pr.getUser().getName() + "\n";
+      response += "Created Date: " + pr.getCreatedAt() + "\n";
+      response += "Merged By: " + pr.getMergedBy().getName() + "\n";
+      response += "Merged Date:" + pr.getMergedAt() + "\n";
+      response += "\nAdditions: ";
+      response += pr.getAdditions(); 
       response += "\nDeletions ";
-      for(int i = 0; i <= pr.getDeletions(); i++)
-      {
-              response += "-";
-      }
+      response += pr.getDeletions();
       response += "\nNumber of Commits: ";
       response += pr.getCommits() + "\n";
+      response += String.format("%64s\n\n", "").replace(" ", "-");
       return response;
     }
     catch(IOException e)
