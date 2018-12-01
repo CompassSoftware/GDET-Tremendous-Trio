@@ -163,6 +163,23 @@ public class GithubDataExtractionTool
   * the repository and the number of issues they've made.
   *
   * @params:
+  *   repo- a repository to find the issues counts per user from.
+  *
+  * @return:
+  *   Map<GHUser, Integer> - a map of users to issue count
+  *     Returns an empty map
+  *     if an IOException is encountered.
+  */
+  public static Map<GHUser, Integer> getIssueCountPerUser(GHRepository repo) {
+    List<GHIssue> commits = getIssues(repo);
+    return getIssueCountPerUser(commits);
+  }
+
+  /** getIssueCountPerUser
+  * Generates a mapping between all users who have filed issues with
+  * the repository and the number of issues they've made.
+  *
+  * @params:
   *   issues - a list of issues to find the issues counts per user from.
   *
   * @return:
