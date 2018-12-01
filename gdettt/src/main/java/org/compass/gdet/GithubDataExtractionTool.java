@@ -170,7 +170,7 @@ public class GithubDataExtractionTool
   *     Returns an empty map
   *     if an IOException is encountered.
   */
-  public static Map<GHUser, Integer> getCommitCountPerUser(List<GHCommit> issues) {
+  public static Map<GHUser, Integer> getIssueCountPerUser(List<GHCommit> issues) {
     try {
       Map<GHUser, Integer> map = new WeakHashMap<GHUser, Integer>();
       for (GHCommit issue : issues) {
