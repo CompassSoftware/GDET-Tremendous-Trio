@@ -193,7 +193,7 @@ public class GithubDataExtractionTool
       for (GHIssue issue : issues) {
         GHUser issueOpener = issue.getUser();
         if (map.containsKey(issueOpener)) {
-          map.put(committer, map.get(issueOpener) + 1);
+          map.put(issueOpener, map.get(issueOpener) + 1);
         }
         else {
           map.put(issueOpener, 1);
