@@ -99,7 +99,7 @@ public class GithubDataExtractionTool
 	  return repo.listCommitComments().asList();
   }
 
- /* getCommits
+ /** getCommits
   *
   * @return:
   *   List<GHCommit> - an iterable containing the commits for this repo
@@ -109,7 +109,7 @@ public class GithubDataExtractionTool
     return repo.listCommits().asList();
   }
 
-  /*getCommitCountPerUser
+  /** getCommitCountPerUser
   * Gets a list of all users who have committed to the repository along with
   * the number of commits they've made.
   *
@@ -126,7 +126,7 @@ public class GithubDataExtractionTool
     return getCommitCountPerUser(commits);
   }
 
-  /*getCommitCountPerUser
+  /** getCommitCountPerUser
   * Gets a list of all users who have committed to the repository along with
   * the number of commits they've made.
   *
@@ -157,6 +157,8 @@ public class GithubDataExtractionTool
     }
   }
 
+
+
   /**getCommitShortInfo
   * This method will try to get the shortInfo object for a given commit.
   *
@@ -175,7 +177,7 @@ public class GithubDataExtractionTool
     }
   }
 
-  /*getGHUserNameWithFallback
+  /**getGHUserNameWithFallback
   * gets a GHUser's name or their login if their name is not set!
   *
   * @return the GHUser's name if it is set and login if not.  If an IOException
