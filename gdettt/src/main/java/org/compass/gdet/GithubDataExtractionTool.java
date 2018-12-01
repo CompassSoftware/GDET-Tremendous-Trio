@@ -158,6 +158,36 @@ public class GithubDataExtractionTool
   }
 
 
+  /** getIssueCountPerUser
+  * Generates a mapping between all users who have filed issues with
+  * the repository and the number of issues they've made.
+  *
+  * @params:
+  *   issues - a list of issues to find the issues counts per user from.
+  *
+  * @return:
+  *   Map<GHUser, Integer> - a map of users to issue count
+  *     Returns an empty map
+  *     if an IOException is encountered.
+  */
+  public static Map<GHUser, Integer> getCommitCountPerUser(List<GHCommit> issues) {
+    try {
+      Map<GHUser, Integer> map = new WeakHashMap<GHUser, Integer>();
+      for (GHCommit issue : issues) {
+        GHUser issueOpener = issue.getUser();
+        if (map.containsKey(issueOpener)) {
+          map.put(committer, map.get(issueOpener) + 1);
+        }
+        else {
+          map.put(issueOpener, 1);
+        }
+      }
+      return map;
+    }
+    catch (IOException e) {
+      return new WeakHashMap<GHUser, Integer>();
+    }
+  }
 
   /**getCommitShortInfo
   * This method will try to get the shortInfo object for a given commit.
