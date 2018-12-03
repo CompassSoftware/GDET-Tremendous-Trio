@@ -1,6 +1,7 @@
 package org.compass.gdet;
 import org.kohsuke.github.*;
 import java.io.IOException;
+import java.lang.NullPointerException;
 import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
@@ -223,7 +224,7 @@ ry based on a given state..
     try {
       Map<GHUser, Integer> map = new WeakHashMap<GHUser, Integer>();
       for (GHCommit commit : commits) {
-        GHUser committer = commit.getCommitter();
+        GHUser committer = commit.getAuthor();
         if (map.containsKey(committer)) {
           map.put(committer, map.get(committer) + 1);
         }
@@ -321,6 +322,9 @@ ry based on a given state..
     }
     catch (IOException e) {
       return null;
+    }
+    catch (NullPointerException e) {
+      return "Unknown User";
     }
   }
 
