@@ -51,6 +51,18 @@ public class GitHubAPIDemo {
           + "Commit Count: " + commitsPerUser.get(user));
       }
 
+      //Print Commit Count Per User
+      System.out.print(startSection);
+      System.out.println("PULL-REQUEST-OPENED-COUNT-PER-USER");
+      System.out.print(endSection);
+      Map<GHUser, Integer> prPerUser =
+        GithubDataExtractionTool.getPullRequestOpenedCountPerUser(repo);
+      for (GHUser user : prPerUser.keySet()) {
+        System.out.println("User: "
+          + GithubDataExtractionTool.getGHUserNameWithFallback(user) + "    "
+          + "PR Opened Count: " + commitsPerUser.get(user));
+      }
+
       //Print Pull Requests
       System.out.print(startSection);
       System.out.println("Pull Requests");
@@ -65,27 +77,28 @@ public class GitHubAPIDemo {
       List<GHPullRequest> cprs = GithubDataExtractionTool.getPullRequests(repo, GHIssueState.CLOSED);
       for (GHPullRequest cpr : cprs) {
           System.out.print(GithubDataExtractionTool.pullRequestToString(cpr));
-      } 
+      }
 
       //Print Pull Request Comments
       System.out.print(startSection);
       System.out.println("Pull Request Review Comments");
       System.out.print(endSection);
 
-     List<GHPullRequestReviewComment> pcrs = GithubDataExtractionTool.getPullRequestReviewComments(repo); 
+     List<GHPullRequestReviewComment> pcrs = GithubDataExtractionTool.getPullRequestReviewComments(repo);
      for (GHPullRequestReviewComment pcr : pcrs) {
        System.out.print(GithubDataExtractionTool.pullRequestReviewCommentsToString(pcr));
     }
- 
+
      System.out.print(startSection);
      System.out.println("Branches");
      System.out.print(endSection);
 
      List<GHBranch> gbs = GithubDataExtractionTool.getBranches(repo);
      for(GHBranch gb : gbs)
-	{
-		System.out.print(GithubDataExtractionTool.branchToString(gb));
-        }
+	   {
+		    System.out.print(GithubDataExtractionTool.branchToString(gb));
+     }
+
     }
   }
 }
