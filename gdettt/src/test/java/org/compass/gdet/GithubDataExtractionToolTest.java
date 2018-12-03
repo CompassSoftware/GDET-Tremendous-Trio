@@ -78,7 +78,22 @@ public class GithubDataExtractionToolTest
     }
     assertTrue(commits.size() > 0);
   }
-
+  /*
+  * A basic test for our getBranches method.  Should return a list of valid
+  * branches.
+  */
+  @Test
+  public void shouldReturnAListOfBranches() {
+    GithubDataExtractionTool gdet = new GithubDataExtractionTool();
+    GHRepository repo =
+      gdet.getRepository("CompassSoftware/GDET-Tremendous-Trio");
+    List<GHBranch> brs = GithubDataExtractionTool.getBranches(repo);
+    for (GHBranch br : brs) {
+      assertTrue(br instanceof GHBranch);
+      assertTrue(br != null);
+    }
+    assertTrue(brs.size() > 0);
+  }
   /*
   * A basic test for our getPullRequests method.  Should get a list of valid issues.
   */
