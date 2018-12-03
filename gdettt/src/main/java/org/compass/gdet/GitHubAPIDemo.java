@@ -1,6 +1,7 @@
 package org.compass.gdet;
 import org.kohsuke.github.*;
 import java.util.List;
+import java.util.Map;
 
 public class GitHubAPIDemo {
   public static void main( String[] args ) {
@@ -13,7 +14,7 @@ public class GitHubAPIDemo {
     GHRepository repo = git.getRepository(
       "CompassSoftware/GDET-Tremendous-Trio");
     if (repo != null) {
-      
+
       System.out.print(GithubDataExtractionTool.getRepositoryMetaData(repo));
       String startSection = String.format("\n\n%32s\n", "").replace(" ", "*");
       String endSection = String.format("%32s\n\n\n", "").replace(" ", "*");
@@ -36,6 +37,18 @@ public class GitHubAPIDemo {
       List<GHIssue> issues = GithubDataExtractionTool.getIssues(repo);
       for (GHIssue issue : issues) {
         System.out.print(GithubDataExtractionTool.issueToString(issue));
+      }
+
+      //Print Commit Count Per User
+      System.out.print(startSection);
+      System.out.println("COMMIT-COUNT-PER-USER");
+      System.out.print(endSection);
+      Map<GHUser, Integer> commitsPerUser =
+        GithubDataExtractionTool.getCommitCountPerUser(repo);
+      for (GHUser user : commitsPerUser.keySet()) {
+        System.out.println("User: "
+          + GithubDataExtractionTool.getGHUserNameWithFallback(user) + "    "
+          + "Commit Count: " + commitsPerUser.get(user));
       }
 
       //Print Pull Requests
@@ -73,7 +86,6 @@ public class GitHubAPIDemo {
 	{
 		System.out.print(GithubDataExtractionTool.branchToString(gb));
         }
-	
     }
   }
 }
