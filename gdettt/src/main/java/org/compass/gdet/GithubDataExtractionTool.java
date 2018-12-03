@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
+import java.util.ArrayList;
 
 public class GithubDataExtractionTool
 {
@@ -83,12 +84,33 @@ public class GithubDataExtractionTool
   public static List<GHIssue> getIssues(GHRepository repo) {
     return repo.listIssues(GHIssueState.ALL).asList();
   }
-
-  /**getCommits
-  * This method will try to get a list of commits for a given repository.
+  
+  /**getBranches
+  * This method will try to get a list of all branches for a given repository.
   *
   * @params:
-  *   repo - the GHRepository object to get commits from.
+  *   repo - the GHRepository object to get branches from
+  *
+  * @return:
+  *   List<GHBranch> - a list of the branch names in a repository.
+  */
+  public static List<GHBranch> getBranches(GHRepository repo) {
+    try{
+	    Map<String, GHBranch> gm = repo.getBranches();
+	    List<GHBranch> gb = new ArrayList<GHBranch>(gm.values());
+	    return gb;
+    }
+    catch(IOException e)
+    {
+	    return null;
+    }
+  }
+
+  /**getCommitComments
+  * This method will try to get a list of commit comments for a given repository.
+  *
+  * @params:
+  *   repo - the GHRepository object to get commits comments from.
   *
   *   @return:
   *   List<GHCommitComment> - an iterable containing the commit comments for this repo
@@ -96,10 +118,69 @@ public class GithubDataExtractionTool
   */
   public static List<GHCommitComment> getCommitComments(GHRepository repo)
   {
-	  return repo.listCommitComments().asList();
+	  	return repo.listCommitComments().asList();
+  }
+  /**getPullRequests
+  * This method will try to get a list of pull requests for a given reposito
+ry based on a given state..
+  *
+  * @params:
+  *   repo - the GHRepository object to get pull requests from.
+  *   state - the state of the pull requests you want
+  *   @return:
+  *   List<GHPullRequest> - an iterable containing the pull requests for this repo
+  *   or null if a list could not be found
+  */
+  public static List<GHPullRequest> getPullRequests(GHRepository repo, GHIssueState state)
+  {
+          return repo.listPullRequests(state).asList();
   }
 
- /** getCommits
+  /**getPullRequestComments
+  * This method will try to get a list of pull requests comments.
+  *
+  * @params:
+  *   repo - the GHRepository object to get pull requests from.
+  *   @return:
+  *   List<GHPullRequestReviewComment> - an iterable containing the pull requests for this repo
+  *   or null if a list could not be found
+  */
+  public static List<GHPullRequestReviewComment> getPullRequestReviewComments(GHRepository repo)
+  {
+     List<GHPullRequest> prs = getPullRequests(repo, GHIssueState.ALL);
+     return getPullRequestReviewComments(prs); 
+  }
+
+  /**getPullRequestComments
+  * This method will try to get a list of pull requests comments.
+  *
+  * @params:
+  *   prs- A list of pull requests to get the comments from
+
+  *   @return:
+  *   List<GHPullRequestReviewComment> - an iterable containing the pull requests comments for this repo
+  *   or null if a list could not be found
+  */
+  public static List<GHPullRequestReviewComment> getPullRequestReviewComments(List<GHPullRequest> prs)
+  {
+	try{	  
+	List<GHPullRequestReviewComment> prct = new ArrayList<GHPullRequestReviewComment>();
+
+	for(GHPullRequest pr : prs)
+	{
+		List<GHPullRequestReviewComment> prc = pr.listReviewComments().asList();
+		prct.addAll(prc);
+	}
+		return prct;
+	}
+	catch(IOException e)
+	{
+		return null;
+	}
+
+  }
+  
+  /**getCommits
   *
   * @return:
   *   List<GHCommit> - an iterable containing the commits for this repo
@@ -265,7 +346,29 @@ public class GithubDataExtractionTool
       return "";
     }
   }
-
+  /*branchToString
+  * converts a given branch to a stirng.
+  *
+  * @params:
+  *   branch - the branch to convert to a string
+  *
+  * @return:
+  *   string - a string representation of the branch.
+  */
+  public static String branchToString(GHBranch branch) {
+    try {
+      String response = "";
+      response += String.format("%64s\n", "").replace(" ", "-");
+      response += branch.getName() + "\n";
+      response += "SHA: " + branch.getSHA1() + "\n";
+      response += String.format("%64s\n\n", "").replace(" ", "-");
+ 
+      return response;
+    }
+    catch (NullPointerException e) {
+      return "";
+    }
+  }
   /**commitsToString
   * converts a commit to a formatted string representing the commit.
   *
@@ -286,27 +389,63 @@ public class GithubDataExtractionTool
     response += String.format("%32s\n\n", "").replace(" ", "-");
     return response;
   }
-  /**commitsCommentToString
-  * converts a commitComments to a formatted string representing the commit.
+  /**pullRequestToString
+  * converts a pull request to a formatted string representing the pull request.
   *
   * @params:
-  *   commit - a List of commitComments to get a formatted string for.
-  *
+  *   pr - a representation of a pull request to convert to a string
+  *   state - the state of the pull request
   * @return:
-  *   string - a formatted string representation of the commit.
+  *   string - a formatted string representation of the pull request..
   */
-  public static String commitCommentToString(GHCommitComment cComment) {
+  public static String pullRequestToString(GHPullRequest pr) {
     try {
       String response = "";
-      response += String.format("%32s\n", "").replace(" ", "-");
-      response += cComment.getUser().getLogin() + "\n";
-      response += "\nCommit Details:\n";
-      response += commitToString(cComment.getCommit());
-      response += cComment.getBody() + "\n";
-      response += String.format("%32s\n\n", "").replace(" ", "-");
+      response += String.format("%64s\n", "").replace(" ", "-");
+      response += pr.getTitle() + "\n";
+      response += "Created By: "  + pr.getUser().getName() + "\n";
+      response += "Created Date: " + pr.getCreatedAt() + "\n";
+      response += "Merged By: " + pr.getMergedBy().getName() + "\n";
+      response += "Merged Date:" + pr.getMergedAt() + "\n";
+      response += "\nAdditions: ";
+      response += pr.getAdditions(); 
+      response += "\nDeletions: ";
+      response += pr.getDeletions();
+      response += "\nNumber of Commits: ";
+      response += pr.getCommits() + "\n";
+      response += String.format("%64s\n\n", "").replace(" ", "-");
       return response;
     }
-    catch (IOException e) {
+    catch(IOException e)
+    {
+	return "";
+    }
+    catch (NullPointerException e) {
+      return "";
+    }
+ }  
+  /**pullRequestCommentToString
+  * converts a pull request comment to a formatted string representing the pull request.
+  *
+  * @params:
+  *   prc - a representation of a pull request comment to convert to a string
+  * @return:
+  *   string - a formatted string representation of the pull request comment.
+  */
+  public static String pullRequestReviewCommentsToString(GHPullRequestReviewComment prc) {
+    try {
+      String response = "";
+      response += String.format("%64s\n", "").replace(" ", "-");
+      response += "Comment Created By: "  + prc.getUser().getName() + "\n";
+      response += prc.getBody();
+      response += String.format("%64s\n\n", "").replace(" ", "-");
+      return response;
+    }
+    catch(IOException e)
+    {
+        return "";
+    }
+    catch (NullPointerException e) {
       return "";
     }
  }

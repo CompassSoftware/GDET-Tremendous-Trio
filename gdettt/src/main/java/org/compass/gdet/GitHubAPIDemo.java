@@ -30,16 +30,6 @@ public class GitHubAPIDemo {
         System.out.print(GithubDataExtractionTool.commitToString(commit));
       }
 
-      //Print Commit Comments
-      System.out.print(startSection);
-      System.out.println("COMMIT COMMENTS");
-      System.out.print(endSection);
-      List<GHCommitComment> cComments =
-        GithubDataExtractionTool.getCommitComments(repo);
-      for(GHCommitComment cComment : cComments) {
-        System.out.print(GithubDataExtractionTool.commitCommentToString(cComment));
-      }
-
       //Print Issues
       System.out.print(startSection);
       System.out.println("ISSUES");
@@ -60,6 +50,42 @@ public class GitHubAPIDemo {
           + GithubDataExtractionTool.getGHUserNameWithFallback(user) + "    "
           + "Commit Count: " + commitsPerUser.get(user));
       }
+
+      //Print Pull Requests
+      System.out.print(startSection);
+      System.out.println("Pull Requests");
+      System.out.print(endSection);
+
+      System.out.println("Open Pull Requests");
+      List<GHPullRequest> oprs = GithubDataExtractionTool.getPullRequests(repo, GHIssueState.OPEN);
+      for (GHPullRequest opr : oprs) {
+	  System.out.print(GithubDataExtractionTool.pullRequestToString(opr));
+      }
+      System.out.println("Closed Pull Requests");
+      List<GHPullRequest> cprs = GithubDataExtractionTool.getPullRequests(repo, GHIssueState.CLOSED);
+      for (GHPullRequest cpr : cprs) {
+          System.out.print(GithubDataExtractionTool.pullRequestToString(cpr));
+      } 
+
+      //Print Pull Request Comments
+      System.out.print(startSection);
+      System.out.println("Pull Request Review Comments");
+      System.out.print(endSection);
+
+     List<GHPullRequestReviewComment> pcrs = GithubDataExtractionTool.getPullRequestReviewComments(repo); 
+     for (GHPullRequestReviewComment pcr : pcrs) {
+       System.out.print(GithubDataExtractionTool.pullRequestReviewCommentsToString(pcr));
+    }
+ 
+     System.out.print(startSection);
+     System.out.println("Branches");
+     System.out.print(endSection);
+
+     List<GHBranch> gbs = GithubDataExtractionTool.getBranches(repo);
+     for(GHBranch gb : gbs)
+	{
+		System.out.print(GithubDataExtractionTool.branchToString(gb));
+        }
     }
   }
 }

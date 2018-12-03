@@ -78,21 +78,36 @@ public class GithubDataExtractionToolTest
     }
     assertTrue(commits.size() > 0);
   }
-    /*
-  * A basic test for our getCommitComment method.  Should return a list of valid
-  * commit comments.
+  /*
+  * A basic test for our getBranches method.  Should return a list of valid
+  * branches.
   */
   @Test
-  public void shouldReturnAListOfValidCommitComments() {
+  public void shouldReturnAListOfBranches() {
     GithubDataExtractionTool gdet = new GithubDataExtractionTool();
     GHRepository repo =
       gdet.getRepository("CompassSoftware/GDET-Tremendous-Trio");
-    List<GHCommitComment> cComments = GithubDataExtractionTool.getCommitComments(repo);
-    for (GHCommitComment cComment : cComments) {
-      assertTrue(cComment instanceof GHCommitComment);
-      assertTrue(cComment != null);
+    List<GHBranch> brs = GithubDataExtractionTool.getBranches(repo);
+    for (GHBranch br : brs) {
+      assertTrue(br instanceof GHBranch);
+      assertTrue(br != null);
     }
-    assertTrue(cComments.size() > 0);
+    assertTrue(brs.size() > 0);
+  }
+  /*
+  * A basic test for our getPullRequests method.  Should get a list of valid issues.
+  */
+  @Test
+  public void shouldGetListPullRequests() {
+    GithubDataExtractionTool gdet = new GithubDataExtractionTool();
+    GHRepository repo =
+      gdet.getRepository("CompassSoftware/GDET-Tremendous-Trio");
+    List<GHPullRequest> prs = GithubDataExtractionTool.getPullRequests(repo,GHIssueState.ALL);
+    for (GHPullRequest pr : prs) {
+      assertTrue(pr instanceof GHPullRequest);
+      assertTrue(pr != null);
+    }
+    assertTrue(prs.size() > 0);
   }
 
   /*
@@ -132,6 +147,7 @@ public class GithubDataExtractionToolTest
       "Taylor Edwards\n" +
       "Wed Nov 07 14:38:37 GMT 2018\n" +
       "Initial Project Setup\n" +
+
       "--------------------------------\n\n" +
       "--------------------------------\n" +
       "Jay Fenwick\n" +
@@ -140,30 +156,49 @@ public class GithubDataExtractionToolTest
       "--------------------------------\n\n";
     assertTrue(expected.equals(result));
   }
-    /*
-  * A basic test for our commitToString method.  Should get a valid formatted
+
+  /*
+  * A basic test for our pullRequestToString method.  Should get a valid formatted
   * string representation of our commit list.
   */
   @Test
-  public void shouldGetAFormattedCommitCommentString() {
+  public void shouldGetAFormattedPullRequestString() {
     GithubDataExtractionTool gdet = new GithubDataExtractionTool();
     GHRepository repo =
-      gdet.getRepository("CompassSoftware/GDET-Tremendous-Trio");
-    List<GHCommitComment> cComment = GithubDataExtractionTool.getCommitComments(repo);
-    String cString = GithubDataExtractionTool.commitCommentToString(cComment.get(0));
-    String expected = "--------------------------------\n" +
-  	"SupahSprinkle\n\n" +
-	"Commit Details:\n" +
-	"--------------------------------\n" +
-	"Gurney Buchanan\n" +
-	"Sat Nov 24 23:13:53 GMT 2018\n" +
-	"Added getIssues and issuesToString methods to handle issue information along with tests and demo\n" +
-	"--------------------------------\n\n" +
-	"This is a test of iss17\n" +
-	"--------------------------------\n\n";
-    assertTrue(expected.equals(cString));
+	  gdet.getRepository("CompassSoftware/GDET-Tremendous-Trio");
+    List<GHPullRequest> pr = GithubDataExtractionTool.getPullRequests(repo,GHIssueState.CLOSED);
+    String prString = GithubDataExtractionTool.pullRequestToString(pr.get(pr.size()-1));
+    String expected = 
+    "----------------------------------------------------------------\n" +
+    "Initial Project Setup\n" +
+    "Created By: Taylor\n" +
+    "Created Date: Wed Nov 07 14:40:32 GMT 2018\n" +
+    "Merged By: Gurney Buchanan\n"+
+    "Merged Date:Fri Nov 09 13:39:06 GMT 2018\n\n"+
+    "Additions: 88\n"+
+    "Deletions: 1\n"+
+    "Number of Commits: 1\n"+
+    "----------------------------------------------------------------\n\n";
+    assertTrue(expected.equals(prString));
   }
-
+  /*
+  * A basic test for our branchToString method.  Should get a valid formatted
+  * string representation of our commit list.
+  */
+  @Test
+  public void shouldGetAFormattedBranchString() {
+    GithubDataExtractionTool gdet = new GithubDataExtractionTool();
+    GHRepository repo =
+          gdet.getRepository("CompassSoftware/GDET-Tremendous-Trio");
+    List<GHBranch> br = GithubDataExtractionTool.getBranches(repo);
+    String brString = GithubDataExtractionTool.branchToString(br.get(br.size()-1));
+    String expected =
+   "----------------------------------------------------------------\n" +
+   "readme\n" +
+   "SHA: eb1e0d3fcd05b277b45e50c6ab796e2a6ab7d119\n" +
+   "----------------------------------------------------------------\n\n";
+   assertTrue(expected.equals(brString));
+  }
   /*
   * A basic test for our getIssues method.  Should get a list of valid issues.
   */
