@@ -54,7 +54,7 @@ public class GitHubAPIDemo {
           System.out.print(GithubDataExtractionTool.pullRequestToString(cpr));
       } 
 
-      //Print Pull Requests
+      //Print Pull Request Comments
       System.out.print(startSection);
       System.out.println("Pull Request Review Comments");
       System.out.print(endSection);
@@ -63,8 +63,17 @@ public class GitHubAPIDemo {
      for (GHPullRequestReviewComment pcr : pcrs) {
        System.out.print(GithubDataExtractionTool.pullRequestReviewCommentsToString(pcr));
     }
-//System.out.print(GithubDataExtractionTool.pullRequestReviewCommentsToString(pcrs.get(0))); 	
+ 
+     System.out.print(startSection);
+     System.out.println("Branches");
+     System.out.print(endSection);
+
+     List<GHBranch> gbs = GithubDataExtractionTool.getBranches(repo);
+     for(GHBranch gb : gbs)
+	{
+		System.out.print(GithubDataExtractionTool.branchToString(gb));
+        }
+	
     }
-     
   }
 }

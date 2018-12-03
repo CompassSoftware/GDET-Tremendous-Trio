@@ -240,9 +240,10 @@ ry based on a given state..
   public static String branchToString(GHBranch branch) {
     try {
       String response = "";
-      response += String.format("%32s\n", "").replace(" ", "-");
+      response += String.format("%64s\n", "").replace(" ", "-");
       response += branch.getName() + "\n";
-      response += String.format("%32s\n", "").replace(" ", "-");
+      response += "SHA: " + branch.getSHA1() + "\n";
+      response += String.format("%64s\n\n", "").replace(" ", "-");
  
       return response;
     }
