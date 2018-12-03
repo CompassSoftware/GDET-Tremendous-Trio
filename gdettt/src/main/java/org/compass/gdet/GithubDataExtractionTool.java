@@ -2,7 +2,7 @@ package org.compass.gdet;
 import org.kohsuke.github.*;
 import java.io.IOException;
 import java.util.List;
-
+import java.util.ArrayList;
 public class GithubDataExtractionTool
 {
   private GitHub github;
@@ -111,6 +111,50 @@ ry based on a given state..
   {
           return repo.listPullRequests(state).asList();
   }
+
+  /**getPullRequestComments
+  * This method will try to get a list of pull requests comments.
+  *
+  * @params:
+  *   repo - the GHRepository object to get pull requests from.
+  *   @return:
+  *   List<GHPullRequestReviewComment> - an iterable containing the pull requests for this repo
+  *   or null if a list could not be found
+  */
+  public static List<GHPullRequestReviewComment> getPullRequestReviewComments(GHRepository repo)
+  {
+     List<GHPullRequest> prs = getPullRequests(repo, GHIssueState.ALL);
+     return getPullRequestReviewComments(prs); 
+  }
+
+    /**getPullRequestComments
+  * This method will try to get a list of pull requests comments.
+  *
+  * @params:
+  *   prs- A list of pull requests to get the comments from
+
+  *   @return:
+  *   List<GHPullRequestReviewComment> - an iterable containing the pull requests comments for this repo
+  *   or null if a list could not be found
+  */
+  public static List<GHPullRequestReviewComment> getPullRequestReviewComments(List<GHPullRequest> prs)
+  {
+	try{	  
+	List<GHPullRequestReviewComment> prct = new ArrayList<GHPullRequestReviewComment>();
+
+	for(GHPullRequest pr : prs)
+	{
+		List<GHPullRequestReviewComment> prc = pr.listReviewComments().asList();
+		prct.addAll(prc);
+	}
+		return prct;
+	}
+	catch(IOException e)
+	{
+		return null;
+	}
+
+  }
  /*
   *
   * @return:
@@ -217,6 +261,31 @@ ry based on a given state..
       return "";
     }
  }  
+  /**pullRequestCommentToString
+  * converts a pull request comment to a formatted string representing the pull request.
+  *
+  * @params:
+  *   prc - a representation of a pull request comment to convert to a string
+  * @return:
+  *   string - a formatted string representation of the pull request comment.
+  */
+  public static String pullRequestReviewCommentsToString(GHPullRequestReviewComment prc) {
+    try {
+      String response = "";
+      response += String.format("%64s\n", "").replace(" ", "-");
+      response += "Comment Created By: "  + prc.getUser().getName() + "\n";
+      response += prc.getBody();
+      response += String.format("%64s\n\n", "").replace(" ", "-");
+      return response;
+    }
+    catch(IOException e)
+    {
+        return "";
+    }
+    catch (NullPointerException e) {
+      return "";
+    }
+ }
 
   /**getRepositoryMetaData
   * This method will return a string representation of the repository's details.

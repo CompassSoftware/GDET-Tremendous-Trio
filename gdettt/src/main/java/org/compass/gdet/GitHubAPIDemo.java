@@ -52,7 +52,19 @@ public class GitHubAPIDemo {
       List<GHPullRequest> cprs = GithubDataExtractionTool.getPullRequests(repo, GHIssueState.CLOSED);
       for (GHPullRequest cpr : cprs) {
           System.out.print(GithubDataExtractionTool.pullRequestToString(cpr));
-      }
+      } 
+
+      //Print Pull Requests
+      System.out.print(startSection);
+      System.out.println("Pull Request Review Comments");
+      System.out.print(endSection);
+
+     List<GHPullRequestReviewComment> pcrs = GithubDataExtractionTool.getPullRequestReviewComments(repo); 
+     for (GHPullRequestReviewComment pcr : pcrs) {
+       System.out.print(GithubDataExtractionTool.pullRequestReviewCommentsToString(pcr));
     }
+//	System.out.print(GithubDataExtractionTool.pullRequestReviewCommentsToString(pcrs.get(0))); 	
+    }
+     
   }
 }
