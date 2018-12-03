@@ -143,6 +143,7 @@ public class GithubDataExtractionTool
       Map<GHUser, Integer> map = new WeakHashMap<GHUser, Integer>();
       for (GHCommit commit : commits) {
         GHUser committer = commit.getCommitter();
+        System.out.println(committer);
         if (map.containsKey(committer)) {
           map.put(committer, map.get(committer) + 1);
         }
