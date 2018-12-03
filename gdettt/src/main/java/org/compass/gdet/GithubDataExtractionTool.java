@@ -19,7 +19,7 @@ public class GithubDataExtractionTool
       github = GitHubBuilder.fromCredentials()
                             .withAbuseLimitHandler( AbuseLimitHandler.FAIL )
                             .withRateLimitHandler( RateLimitHandler.FAIL )
-                            .build()
+                            .build();
       outputController = new GDETOutputHandler( java.io.OutputStreamWriter.class );
     }
     catch (IOException e) {
