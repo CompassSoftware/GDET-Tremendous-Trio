@@ -78,7 +78,22 @@ public class GithubDataExtractionToolTest
     }
     assertTrue(commits.size() > 0);
   }
-
+  /*
+  * A basic test for our getBranches method.  Should return a list of valid
+  * branches.
+  */
+  @Test
+  public void shouldReturnAListOfBranches() {
+    GithubDataExtractionTool gdet = new GithubDataExtractionTool();
+    GHRepository repo =
+      gdet.getRepository("CompassSoftware/GDET-Tremendous-Trio");
+    List<GHBranch> brs = GithubDataExtractionTool.getBranches(repo);
+    for (GHBranch br : brs) {
+      assertTrue(br instanceof GHBranch);
+      assertTrue(br != null);
+    }
+    assertTrue(brs.size() > 0);
+  }
   /*
   * A basic test for our getPullRequests method.  Should get a list of valid issues.
   */
@@ -166,7 +181,24 @@ public class GithubDataExtractionToolTest
     "----------------------------------------------------------------\n\n";
     assertTrue(expected.equals(prString));
   }
-
+  /*
+  * A basic test for our branchToString method.  Should get a valid formatted
+  * string representation of our commit list.
+  */
+  @Test
+  public void shouldGetAFormattedBranchString() {
+    GithubDataExtractionTool gdet = new GithubDataExtractionTool();
+    GHRepository repo =
+          gdet.getRepository("CompassSoftware/GDET-Tremendous-Trio");
+    List<GHBranch> br = GithubDataExtractionTool.getBranches(repo);
+    String brString = GithubDataExtractionTool.branchToString(br.get(br.size()-1));
+    String expected =
+   "----------------------------------------------------------------\n" +
+   "readme\n" +
+   "SHA: eb1e0d3fcd05b277b45e50c6ab796e2a6ab7d119\n" +
+   "----------------------------------------------------------------\n\n";
+   assertTrue(expected.equals(brString));
+  }
   /*
   * A basic test for our getIssues method.  Should get a list of valid issues.
   */

@@ -3,6 +3,8 @@ import org.kohsuke.github.*;
 import java.io.IOException;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
+
 public class GithubDataExtractionTool
 {
   private GitHub github;
@@ -80,6 +82,27 @@ public class GithubDataExtractionTool
   */
   public static List<GHIssue> getIssues(GHRepository repo) {
     return repo.listIssues(GHIssueState.ALL).asList();
+  }
+  
+  /**getBranches
+  * This method will try to get a list of all branches for a given repository.
+  *
+  * @params:
+  *   repo - the GHRepository object to get branches from
+  *
+  * @return:
+  *   List<GHBranch> - a list of the branch names in a repository.
+  */
+  public static List<GHBranch> getBranches(GHRepository repo) {
+    try{
+	    Map<String, GHBranch> gm = repo.getBranches();
+	    List<GHBranch> gb = new ArrayList<GHBranch>(gm.values());
+	    return gb;
+    }
+    catch(IOException e)
+    {
+	    return null;
+    }
   }
 
   /**getCommitComments
@@ -205,7 +228,29 @@ ry based on a given state..
       return "";
     }
   }
-
+  /*branchToString
+  * converts a given branch to a stirng.
+  *
+  * @params:
+  *   branch - the branch to convert to a string
+  *
+  * @return:
+  *   string - a string representation of the branch.
+  */
+  public static String branchToString(GHBranch branch) {
+    try {
+      String response = "";
+      response += String.format("%64s\n", "").replace(" ", "-");
+      response += branch.getName() + "\n";
+      response += "SHA: " + branch.getSHA1() + "\n";
+      response += String.format("%64s\n\n", "").replace(" ", "-");
+ 
+      return response;
+    }
+    catch (NullPointerException e) {
+      return "";
+    }
+  }
   /**commitsToString
   * converts a commit to a formatted string representing the commit.
   *
