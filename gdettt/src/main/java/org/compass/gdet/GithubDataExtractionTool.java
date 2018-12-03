@@ -20,7 +20,10 @@ public class GithubDataExtractionTool
   public GithubDataExtractionTool()
   {
     try {
-      github = GitHub.connect();
+      github = GitHubBuilder.fromCredentials()
+                            .withAbuseLimitHandler( AbuseLimitHandler.FAIL )
+                            .withRateLimitHandler( RateLimitHandler.FAIL )
+                            .build();
       outputController = new GDETOutputHandler( java.io.OutputStreamWriter.class );
     }
     catch (IOException e) {
