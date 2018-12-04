@@ -88,7 +88,7 @@ public class GithubDataExtractionTool
   public static List<GHIssue> getIssues(GHRepository repo) {
     return repo.listIssues(GHIssueState.ALL).asList();
   }
-  
+
   /**getBranches
   * This method will try to get a list of all branches for a given repository.
   *
@@ -152,7 +152,7 @@ ry based on a given state..
   public static List<GHPullRequestReviewComment> getPullRequestReviewComments(GHRepository repo)
   {
      List<GHPullRequest> prs = getPullRequests(repo, GHIssueState.ALL);
-     return getPullRequestReviewComments(prs); 
+     return getPullRequestReviewComments(prs);
   }
 
   /**getPullRequestComments
@@ -167,7 +167,7 @@ ry based on a given state..
   */
   public static List<GHPullRequestReviewComment> getPullRequestReviewComments(List<GHPullRequest> prs)
   {
-	try{	  
+	try{
 	List<GHPullRequestReviewComment> prct = new ArrayList<GHPullRequestReviewComment>();
 
 	for(GHPullRequest pr : prs)
@@ -183,7 +183,7 @@ ry based on a given state..
 	}
 
   }
-  
+
   /**getCommits
   *
   * @return:
@@ -291,6 +291,62 @@ ry based on a given state..
     }
   }
 
+  /**getPullRequestOpenedCountPerUser
+  *
+  * This method will return a map of users and the count of pull requests
+  *   opened per user.
+  *
+  * @params:
+  *   repo - the repository to get a list of pull requests from, then get a
+  *     pull request opened count for each user from.
+  *
+  * @return:
+  *   Map<GHUser, Integer> - a map of GHUsers to the number of pull requests
+  *     they've opened.
+  */
+  public static Map<GHUser, Integer> getPullRequestCountPerUser(
+    GHRepository repo, boolean mergedBy) {
+    return getPullRequestCountPerUser(getPullRequests(repo,
+      GHIssueState.ALL), mergedBy);
+  }
+
+  /**getPullRequestOpenedCountPerUser
+  *
+  * This method will return a map of users and the count of pull requests
+  *   opened per user.
+  *
+  * @params:
+  *   List<GHPullRequest - a list of pull GHPullRequest objects.
+  *
+  * @return:
+  *   Map<GHUser, Integer> - a map of GHUsers to the number of pull requests
+  *     they've opened.
+  */
+  public static Map<GHUser, Integer> getPullRequestCountPerUser(
+    List<GHPullRequest> prs, boolean mergedBy) {
+    try {
+      Map<GHUser, Integer> map = new WeakHashMap<GHUser, Integer>();
+      for (GHPullRequest pr : prs) {
+        if ((mergedBy && pr.isMerged()) || !mergedBy) {
+          GHUser prOpener = pr.getUser();
+          if (mergedBy) {
+            prOpener = pr.getMergedBy();
+          }
+          if (map.containsKey(prOpener)) {
+            map.put(prOpener, map.get(prOpener) + 1);
+          }
+          else {
+            map.put(prOpener, 1);
+          }
+        }
+      }
+      return map;
+    }
+    catch (IOException e) {
+      return new WeakHashMap<GHUser, Integer>();
+    }
+  }
+
   /**getCommitShortInfo
   * This method will try to get the shortInfo object for a given commit.
   *
@@ -369,7 +425,7 @@ ry based on a given state..
       response += branch.getName() + "\n";
       response += "SHA: " + branch.getSHA1() + "\n";
       response += String.format("%64s\n\n", "").replace(" ", "-");
- 
+
       return response;
     }
     catch (NullPointerException e) {
@@ -415,7 +471,7 @@ ry based on a given state..
       response += "Merged By: " + pr.getMergedBy().getName() + "\n";
       response += "Merged Date:" + pr.getMergedAt() + "\n";
       response += "\nAdditions: ";
-      response += pr.getAdditions(); 
+      response += pr.getAdditions();
       response += "\nDeletions: ";
       response += pr.getDeletions();
       response += "\nNumber of Commits: ";
@@ -430,7 +486,7 @@ ry based on a given state..
     catch (NullPointerException e) {
       return "";
     }
- }  
+ }
   /**pullRequestCommentToString
   * converts a pull request comment to a formatted string representing the pull request.
   *

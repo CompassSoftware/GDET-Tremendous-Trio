@@ -145,13 +145,13 @@ public class GithubDataExtractionToolTest
     }
     String expected = "--------------------------------\n" +
       "Taylor Edwards\n" +
-      "Wed Nov 07 14:38:37 GMT 2018\n" +
+      "Wed Nov 07 09:38:37 EST 2018\n" +
       "Initial Project Setup\n" +
 
       "--------------------------------\n\n" +
       "--------------------------------\n" +
       "Jay Fenwick\n" +
-      "Mon Nov 05 14:08:28 GMT 2018\n" +
+      "Mon Nov 05 09:08:28 EST 2018\n" +
       "Initial commit\n" +
       "--------------------------------\n\n";
     assertTrue(expected.equals(result));
@@ -168,13 +168,13 @@ public class GithubDataExtractionToolTest
 	  gdet.getRepository("CompassSoftware/GDET-Tremendous-Trio");
     List<GHPullRequest> pr = GithubDataExtractionTool.getPullRequests(repo,GHIssueState.CLOSED);
     String prString = GithubDataExtractionTool.pullRequestToString(pr.get(pr.size()-1));
-    String expected = 
+    String expected =
     "----------------------------------------------------------------\n" +
     "Initial Project Setup\n" +
     "Created By: Taylor\n" +
-    "Created Date: Wed Nov 07 14:40:32 GMT 2018\n" +
+    "Created Date: Wed Nov 07 09:40:32 EST 2018\n" +
     "Merged By: Gurney Buchanan\n"+
-    "Merged Date:Fri Nov 09 13:39:06 GMT 2018\n\n"+
+    "Merged Date:Fri Nov 09 08:39:06 EST 2018\n\n"+
     "Additions: 88\n"+
     "Deletions: 1\n"+
     "Number of Commits: 1\n"+
