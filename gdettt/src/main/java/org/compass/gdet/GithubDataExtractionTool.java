@@ -304,7 +304,7 @@ ry based on a given state..
   *   Map<GHUser, Integer> - a map of GHUsers to the number of pull requests
   *     they've opened.
   */
-  public static Map<GHUser, Integer> getPullRequestOpenedCountPerUser(
+  public static Map<GHUser, Integer> getPullRequestCountPerUser(
     GHRepository repo, boolean mergedBy) {
     return getPullRequestOpenedCountPerUser(getPullRequests(repo,
       GHIssueState.ALL), mergedBy);
@@ -322,7 +322,7 @@ ry based on a given state..
   *   Map<GHUser, Integer> - a map of GHUsers to the number of pull requests
   *     they've opened.
   */
-  public static Map<GHUser, Integer> getPullRequestOpenedCountPerUser(
+  public static Map<GHUser, Integer> getPullRequestCountPerUser(
     List<GHPullRequest> prs, boolean mergedBy) {
     try {
       Map<GHUser, Integer> map = new WeakHashMap<GHUser, Integer>();
