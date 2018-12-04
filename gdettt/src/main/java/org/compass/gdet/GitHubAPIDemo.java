@@ -75,6 +75,17 @@ public class GitHubAPIDemo {
           prMergedPerUser.get(user));
       }
 
+      System.out.print(startSection);
+      System.out.println("ISSUE-CREATED-COUNT-PER-USER");
+      System.out.print(endSection);
+      Map<GHUser, Integer> issuesOpenedPerUser =
+        GithubDataExtractionTool.getIssueCountPerUser(repo);
+      for (GHUser user : issuesOpenedPerUser.keySet()) {
+        System.out.printf("User: %-20s    PR Merged Count: %d\n",
+          GithubDataExtractionTool.getGHUserNameWithFallback(user),
+          issuesOpenedPerUser.get(user));
+      }
+
       //Print Pull Requests
       System.out.print(startSection);
       System.out.println("Pull Requests");
