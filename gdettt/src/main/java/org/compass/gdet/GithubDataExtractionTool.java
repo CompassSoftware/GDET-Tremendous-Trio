@@ -305,9 +305,9 @@ ry based on a given state..
   *     they've opened.
   */
   public static Map<GHUser, Integer> getPullRequestOpenedCountPerUser(
-    GHRepository repo) {
+    GHRepository repo, boolean mergedBy) {
     return getPullRequestOpenedCountPerUser(getPullRequests(repo,
-      GHIssueState.ALL));
+      GHIssueState.ALL), mergedBy);
   }
 
   /**getPullRequestOpenedCountPerUser
@@ -323,11 +323,14 @@ ry based on a given state..
   *     they've opened.
   */
   public static Map<GHUser, Integer> getPullRequestOpenedCountPerUser(
-    List<GHPullRequest> prs) {
+    List<GHPullRequest> prs, boolean mergedBy) {
     try {
       Map<GHUser, Integer> map = new WeakHashMap<GHUser, Integer>();
       for (GHPullRequest pr : prs) {
         GHUser prOpener = pr.getUser();
+        if (mergedBy) {
+          prOpener = pr.getMergedBy();
+        }
         if (map.containsKey(prOpener)) {
           map.put(prOpener, map.get(prOpener) + 1);
         }
