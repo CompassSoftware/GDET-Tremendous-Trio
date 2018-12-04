@@ -56,7 +56,7 @@ public class GitHubAPIDemo {
       System.out.println("PULL-REQUEST-OPENED-COUNT-PER-USER");
       System.out.print(endSection);
       Map<GHUser, Integer> prPerUser =
-        GithubDataExtractionTool.getPullRequestOpenedCountPerUser(repo, false);
+        GithubDataExtractionTool.getPullRequestCountPerUser(repo, false);
       for (GHUser user : prPerUser.keySet()) {
         System.out.printf("User: %-20s    PR Opened Count: %d\n",
           GithubDataExtractionTool.getGHUserNameWithFallback(user),
@@ -68,7 +68,7 @@ public class GitHubAPIDemo {
       System.out.println("PULL-REQUEST-MERGED-COUNT-PER-USER");
       System.out.print(endSection);
       Map<GHUser, Integer> prMergedPerUser =
-        GithubDataExtractionTool.getPullRequestOpenedCountPerUser(repo, true);
+        GithubDataExtractionTool.getPullRequestCountPerUser(repo, true);
       for (GHUser user : prMergedPerUser.keySet()) {
         System.out.printf("User: %-20s    PR Merged Count: %d\n",
           GithubDataExtractionTool.getGHUserNameWithFallback(user),
