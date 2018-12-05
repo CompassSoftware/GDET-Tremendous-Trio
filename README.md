@@ -2,6 +2,12 @@
 
 This tool allows the easy extraction of GitHub repository data, such as commits, branches, issues, etc.  The tool is currently under development, with more functionality coming every day.
 
+# Requirements
+
+In order to build GDET, [Apache Maven 4.0.0](http://maven.apache.org/) or newer and [OpenJDK 10](https://openjdk.java.net/) or newer are required.
+
+Execution is possible on Java runtime environments implementing Java 8 or newer.
+
 # Configuring GitHub Authentication
 
 GDET currently pulls GitHub credentials directly from a file at `~/.github`.  In order to prepare for execution, you should create this file with the following format:
