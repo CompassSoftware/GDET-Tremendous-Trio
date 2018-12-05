@@ -84,18 +84,6 @@ public class GitHubAPIDemo {
           prMergedPerUser.get(user));
       }
 
-      //Print Commit Comment Count Per User
-      System.out.print(startSection);
-      System.out.println("COMMIT-COMMENT-COUNT-PER-USER");
-      System.out.print(endSection);
-      Map<GHUser, Integer> ccPerUser =
-        GithubDataExtractionTool.getCommitCommentCountPerUser(repo);
-      for (GHUser user : prMergedPerUser.keySet()) {
-        System.out.printf("User: %-20s    Commit Count: %d\n",
-          GithubDataExtractionTool.getGHUserNameWithFallback(user),
-          ccPerUser.get(user));
-      }
-
       //Print Pull Requests
       System.out.print(startSection);
       System.out.println("Pull Requests");
