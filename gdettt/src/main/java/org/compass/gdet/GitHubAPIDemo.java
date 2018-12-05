@@ -37,7 +37,16 @@ public class GitHubAPIDemo {
       List<GHIssue> issues = GithubDataExtractionTool.getIssues(repo);
       for (GHIssue issue : issues) {
         System.out.print(GithubDataExtractionTool.issueToString(issue));
-      }
+     }
+      //Print Issue Comments
+      System.out.print(startSection);
+      System.out.println("Issue Comments");
+      System.out.print(endSection);
+
+     List<GHIssueComment> ics = GithubDataExtractionTool.getIssueComments(repo);
+     for (GHIssueComment ic : ics) {
+       System.out.print(GithubDataExtractionTool.issueCommentToString(ic));
+    }
 
       //Print Commit Count Per User
       System.out.print(startSection);
@@ -75,17 +84,28 @@ public class GitHubAPIDemo {
           prMergedPerUser.get(user));
       }
 
+
       System.out.print(startSection);
       System.out.println("ISSUE-CREATED-COUNT-PER-USER");
       System.out.print(endSection);
       Map<GHUser, Integer> issuesOpenedPerUser =
         GithubDataExtractionTool.getIssueCountPerUser(repo);
       for (GHUser user : issuesOpenedPerUser.keySet()) {
-        System.out.printf("User: %-20s    PR Merged Count: %d\n",
+        System.out.printf("User: %-20s     Issue Count: %d\n",
           GithubDataExtractionTool.getGHUserNameWithFallback(user),
           issuesOpenedPerUser.get(user));
       }
-
+      
+      System.out.print(startSection);
+      System.out.println("ISSUE-COMMENT-COUNT-PER-USER");
+      System.out.print(endSection);
+      Map<GHUser, Integer> issueCommentsOpenedPerUser =
+        GithubDataExtractionTool.getIssueCommentCountPerUser(repo);
+      for (GHUser user : issueCommentsOpenedPerUser.keySet()) {
+        System.out.printf("User: %-20s     Issue Count: %d\n",
+          GithubDataExtractionTool.getGHUserNameWithFallback(user),
+          issueCommentsOpenedPerUser.get(user));
+      }
       //Print Pull Requests
       System.out.print(startSection);
       System.out.println("Pull Requests");

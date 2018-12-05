@@ -474,7 +474,7 @@ ry based on a given state..
   }
 
   /*issueToSTring
-  * converts a given GHCommit to a stirng.
+  * converts a givem GHIssue to a stirng.
   *
   * @params:
   *   issue - the issue to convert to a string
@@ -488,6 +488,29 @@ ry based on a given state..
       response += String.format("%32s\n", "").replace(" ", "-");
       response += "#" + issue.getNumber() + " " + issue.getTitle() + "\n";
       response += issue.getUser().getName() + "\n";
+      response += String.format("%32s\n\n", "").replace(" ", "-");
+      return response;
+    }
+    catch (IOException e) {
+      return "";
+    }
+  }
+
+  /*issueCommensToSTring
+  * converts a given GHIssueComment to a stirng.
+  *
+  * @params:
+  *   ic - the issue comment to convert to a string
+  *
+  * @return:
+  *   string - a string representation of the issue.
+  */
+  public static String issueCommentToString(GHIssueComment issueComments) {
+    try {
+      String response = "";
+      response += String.format("%32s\n", "").replace(" ", "-");
+      response += issueComments.getUser().getName() + "\n";
+      response += issueComments.getBody() + "\n";
       response += String.format("%32s\n\n", "").replace(" ", "-");
       return response;
     }
