@@ -169,16 +169,17 @@ public class GithubDataExtractionToolTest
     List<GHPullRequest> pr = GithubDataExtractionTool.getPullRequests(repo,GHIssueState.CLOSED);
     String prString = GithubDataExtractionTool.pullRequestToString(pr.get(pr.size()-1));
     String expected =
-    "----------------------------------------------------------------\n" +
-    "Initial Project Setup\n" +
-    "Created By: Taylor\n" +
-    "Created Date: Wed Nov 07 09:40:32 EST 2018\n" +
-    "Merged By: Gurney Buchanan\n"+
-    "Merged Date:Fri Nov 09 08:39:06 EST 2018\n\n"+
-    "Additions: 88\n"+
-    "Deletions: 1\n"+
-    "Number of Commits: 1\n"+
-    "----------------------------------------------------------------\n\n";
+    "----------------------------------------------------------------\n"+
+    "Initial Project Setup\n"+
+    "Created By: Taylor\n"+
+    "Created Date: Wed Nov 07 14:40:32 GMT 2018\n" +
+    "Merged By: Gurney Buchanan\n" +
+    "Merged Date:Fri Nov 09 13:39:06 GMT 2018\n" +
+
+    "\nAdditions: 88"+
+    "\nD0letions: 1" +
+    "\nNumber of Commits: 1\n" +
+    "----------------------------------------------------------------\n\n";   
     assertTrue(expected.equals(prString));
   }
   /*

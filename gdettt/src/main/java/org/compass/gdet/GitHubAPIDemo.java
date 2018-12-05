@@ -29,6 +29,16 @@ public class GitHubAPIDemo {
       for (GHCommit commit : commits) {
         System.out.print(GithubDataExtractionTool.commitToString(commit));
       }
+      
+      //Print Commit Comments
+      System.out.print(startSection);
+      System.out.println("COMMIT COMMENTS");
+      System.out.print(endSection);
+      List<GHCommitComment> cComments =
+        GithubDataExtractionTool.getCommitComments(repo);
+      for(GHCommitComment cComment : cComments) {
+        System.out.print(GithubDataExtractionTool.commitCommentToString(cComment));
+      }
 
       //Print Issues
       System.out.print(startSection);
@@ -50,7 +60,6 @@ public class GitHubAPIDemo {
           GithubDataExtractionTool.getGHUserNameWithFallback(user),
           commitsPerUser.get(user));
       }
-
       //Print Commit Count Per User
       System.out.print(startSection);
       System.out.println("PULL-REQUEST-OPENED-COUNT-PER-USER");
@@ -75,6 +84,18 @@ public class GitHubAPIDemo {
           prMergedPerUser.get(user));
       }
 
+      //Print Commit Comment Count Per User
+      System.out.print(startSection);
+      System.out.println("COMMIT-COMMENT-COUNT-PER-USER");
+      System.out.print(endSection);
+      Map<GHUser, Integer> ccPerUser =
+        GithubDataExtractionTool.getCommitCommentCountPerUser(repo);
+      for (GHUser user : prMergedPerUser.keySet()) {
+        System.out.printf("User: %-20s    Commit Count: %d\n",
+          GithubDataExtractionTool.getGHUserNameWithFallback(user),
+          ccPerUser.get(user));
+      }
+
       //Print Pull Requests
       System.out.print(startSection);
       System.out.println("Pull Requests");
@@ -91,7 +112,6 @@ public class GitHubAPIDemo {
           System.out.print(GithubDataExtractionTool.pullRequestToString(cpr));
       }
 
-      //Print Pull Request Comments
       System.out.print(startSection);
       System.out.println("Pull Request Review Comments");
       System.out.print(endSection);

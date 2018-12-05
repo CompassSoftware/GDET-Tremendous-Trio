@@ -122,7 +122,7 @@ public class GithubDataExtractionTool
   */
   public static List<GHCommitComment> getCommitComments(GHRepository repo)
   {
-	  	return repo.listCommitComments().asList();
+ 	return repo.listCommitComments().asList();
   }
   /**getPullRequests
   * This method will try to get a list of pull requests for a given reposito
@@ -242,7 +242,57 @@ ry based on a given state..
     }
   }
 
+ /** getCommitCommentCountPerUser
+  * Gets a list of all users who have committed to the repository along with
+  * the number of commits they've made.
+  *
+  * @params:
+  *   repo - the GHRepository object to get a list of commits from.
+  *
+  * @return:
+  *   Map<GHUser, Integer> - a map between all users that have committed to the
+  *     repository and the number of commit comments they've made.Returns an empty map
+  *     if an IOException is encountered.
+  */
+  public static Map<GHUser, Integer> getCommitCommentCountPerUser(GHRepository repo) {
+    List<GHCommitComment> commitComments = getCommitComments(repo);
+    return getCommitCommentCountPerUser(commitComments);
+  }
 
+  /** getCommitCommentCountPerUser
+  * Gets a list of all users who have committed to the repository along with
+  * the number of commit comments they've made.
+  *
+  * @params:
+  *   commitComments - a list of commits to find the commits counts per user from.
+  *
+  * @return:
+  *   Map<GHUser, Integer> - a map between all users that have committed to the
+  *     repository and the number of commit comments they've made.  Returns an empty map
+  *     if an IOException is encountered.
+  */
+  public static Map<GHUser, Integer> getCommitCommentCountPerUser(List<GHCommitComment> commitComments) {
+    try {
+      	Map<GHUser, Integer> map = new WeakHashMap<GHUser, Integer>();
+        for (GHCommitComment commitComment : commitComments) {
+     	   GHUser committer = commitComment.getUser();
+       		 if (map.containsKey(committer)) {
+         	 map.put(committer, map.get(committer) + 1);
+                 }
+		 else if(map.containsValue(null))
+		 {
+			 map.put(committer, 0);
+		 }
+		 else {
+        	  map.put(committer, 1);
+       	         }
+	    	}
+      		return map;
+    }
+    catch (IOException e) {
+      return new WeakHashMap<GHUser, Integer>();
+    }
+  }
   /** getIssueCountPerUser
   * Generates a mapping between all users who have filed issues with
   * the repository and the number of issues they've made.
@@ -452,6 +502,31 @@ ry based on a given state..
     response += String.format("%32s\n\n", "").replace(" ", "-");
     return response;
   }
+
+  /**commitsCommentToString
+  * converts a commitComments to a formatted string representing the commit.
+  *
+  * @params:
+  *   commit - a List of commitComments to get a formatted string for.
+  *
+  * @return:
+  *   string - a formatted string representation of the commit.
+  */
+  public static String commitCommentToString(GHCommitComment cComment) {
+    try {
+      String response = "";
+      response += String.format("%32s\n", "").replace(" ", "-");
+      response += cComment.getUser().getLogin() + "\n";
+      response += "\nCommit Details:\n";
+      response += commitToString(cComment.getCommit());
+      response += cComment.getBody() + "\n";
+      response += String.format("%32s\n\n", "").replace(" ", "-");
+      return response;
+    }
+    catch (IOException e) {
+      return "";
+    }
+ }  
   /**pullRequestToString
   * converts a pull request to a formatted string representing the pull request.
   *
