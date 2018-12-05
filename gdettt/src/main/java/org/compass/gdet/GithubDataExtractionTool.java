@@ -88,7 +88,45 @@ public class GithubDataExtractionTool
   public static List<GHIssue> getIssues(GHRepository repo) {
     return repo.listIssues(GHIssueState.ALL).asList();
   }
+  /**getIssueComments
+  * This method will try to get a list of all issue comments for a given repository.
+  *
+  * @params:
+  *   repo - the GHRepository object to get Issues Comments from
+  *
+  * @return:
+  *   List<GHIssueComment> - a list of the GHIssuesComments queried or null if the query fails.
+  */
+  public static List<GHIssueComment> getIssueComments(GHRepository repo) {
+    List<GHIssue> issues = getIssues(repo);
+    return getIssueComments(issues);
+  }
+   /**getIssueComments
+  * This method will try to get a list of all issue comments for a given repository.
+  *
+  * @params:
+  *   issues - the list of issues
+  *
+  * @return:
+  *   List<GHIssueComment> - a list of the GHIssuesComments queried or null if the query fails.
+  */
+  public static List<GHIssueComment> getIssueComments(List<GHIssue> issues){
+      try{
 
+        List<GHIssueComment> ict = new ArrayList<GHIssueComment>();
+
+        for(GHIssue issue : issues)
+        {
+                List<GHIssueComment> ic = issue.listComments().asList();
+                ict.addAll(ic);
+        }
+                return ict;
+        }
+        catch(IOException e)
+        {
+                return null;
+        }
+}
   /**getBranches
   * This method will try to get a list of all branches for a given repository.
   *
@@ -291,6 +329,54 @@ ry based on a given state..
     }
   }
 
+
+  /** getIssueCommentCountPerUser
+  * Generates a mapping between all users who have filed issues with
+  * the repository and the number of issue comments  they've made.
+  *
+  * @params:
+  *   repo- a repository to find the issues counts per user from.
+  *
+  * @return:
+  *   Map<GHUser, Integer> - a map of users to issue comment count
+  *     Returns an empty map
+  *     if an IOException is encountered.
+  */
+  public static Map<GHUser, Integer> getIssueCommentCountPerUser(GHRepository repo) {
+    List<GHIssueComment> ic = getIssueComments(repo);
+    return getIssueCommentCountPerUser(ic);
+  }
+
+  /** getIssueCommentCountPerUser
+  * Generates a mapping between all users who have filed issues with
+  * the repository and the number of issue comments they've made.
+  *
+  * @params:
+  *   issuesComments - a list of issues to find the issue comment counts per user from.
+  *
+  * @return:
+  *   Map<GHUser, Integer> - a map of users to issue comment count
+  *     Returns an empty map
+  *     if an IOException is encountered.
+  */
+  public static Map<GHUser, Integer> getIssueCommentCountPerUser(List<GHIssueComment> issueComments) {
+    try {
+      Map<GHUser, Integer> map = new WeakHashMap<GHUser, Integer>();
+      for (GHIssueComment ic : issueComments) {
+        GHUser issueCommentOpener = ic.getUser();
+        if (map.containsKey(issueCommentOpener)) {
+          map.put(issueCommentOpener, map.get(issueCommentOpener) + 1);
+        }
+        else {
+          map.put(issueCommentOpener, 1);
+        }
+      }
+      return map;
+    }
+    catch (IOException e) {
+      return new WeakHashMap<GHUser, Integer>();
+    }
+  }
   /**getPullRequestOpenedCountPerUser
   *
   * This method will return a map of users and the count of pull requests
