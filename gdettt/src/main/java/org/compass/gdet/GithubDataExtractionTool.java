@@ -290,7 +290,54 @@ ry based on a given state..
       return new WeakHashMap<GHUser, Integer>();
     }
   }
+  /** getPullRequestReviewCommentCountPerUser
+  * Generates a mapping between all users who have pull request review comments with
+  * the repository and the number of pull request review comments made.
+  *
+  * @params:
+  *   repo- a repository to find the issues counts per user from.
+  *
+  * @return:
+  *   Map<GHUser, Integer> - a map of users to issue count
+  *     Returns an empty map
+  *     if an IOException is encountered.
+  */
+  public static Map<GHUser, Integer> getPullRequestReviewCommentCountPerUser(GHRepository repo) {
+    List<GHPullRequestReviewComment> prrc = getPullRequestReviewComments(repo);
+    return getPullRequestReviewCommentCountPerUser(prrc);
+  }
 
+  /** getPullRequestReviewCommentCountPerUser
+  * Generates a mapping between all users who have made pr review comments with
+  * the repository and the number of pull request review comments they've made.
+  *
+  * @params:
+  *   prrc- a list of pull request review comments.
+  *
+  * @return:
+  *   Map<GHUser, Integer> - a map of users to pull request review comments count
+  *     Returns an empty map
+  *     if an IOException is encountered.
+  */
+  public static Map<GHUser, Integer> getPullRequestReviewCommentCountPerUser(List<GHPullRequestReviewComment> prrcs) {
+    try {
+      Map<GHUser, Integer> map = new WeakHashMap<GHUser, Integer>();
+      for (GHPullRequestReviewComment prrc: prrcs) {
+        GHUser prrcOpener = prrc.getUser();
+        if (map.containsKey(prrcOpener)) {
+          map.put(prrcOpener, map.get(prrcOpener) + 1);
+        }
+        else {
+          map.put(prrcOpener, 1);
+        }
+      }
+      return map;
+    }
+    catch (IOException e) {
+      return new WeakHashMap<GHUser, Integer>();
+    }
+  }
+ 
   /**getPullRequestOpenedCountPerUser
   *
   * This method will return a map of users and the count of pull requests

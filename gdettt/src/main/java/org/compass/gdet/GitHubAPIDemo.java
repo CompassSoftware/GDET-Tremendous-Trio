@@ -63,7 +63,7 @@ public class GitHubAPIDemo {
           prPerUser.get(user));
       }
 
-      //Print Commit Count Per User
+      //Print Pull Request Count Per User
       System.out.print(startSection);
       System.out.println("PULL-REQUEST-MERGED-COUNT-PER-USER");
       System.out.print(endSection);
@@ -73,6 +73,17 @@ public class GitHubAPIDemo {
         System.out.printf("User: %-20s    PR Merged Count: %d\n",
           GithubDataExtractionTool.getGHUserNameWithFallback(user),
           prMergedPerUser.get(user));
+      }
+      //Print Pull Request Review CommentCount Per User
+      System.out.print(startSection);
+      System.out.println("PULL-REQUEST-REVIEW-COMMENT-COUNT-PER-USER");
+      System.out.print(endSection);
+      Map<GHUser, Integer> prrcMergedPerUser =
+        GithubDataExtractionTool.getPullRequestReviewCommentCountPerUser(repo);
+      for (GHUser user : prrcMergedPerUser.keySet()) {
+        System.out.printf("User: %-20s    Count: %d\n",
+          GithubDataExtractionTool.getGHUserNameWithFallback(user),
+          prrcMergedPerUser.get(user));
       }
 
       System.out.print(startSection);
