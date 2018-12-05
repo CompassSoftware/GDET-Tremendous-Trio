@@ -4,7 +4,7 @@ This tool allows the easy extraction of GitHub repository data, such as commits,
 
 # Requirements
 
-In order to build GDET, [Apache Maven 4.0.0](http://maven.apache.org/) or newer and [OpenJDK 10](https://openjdk.java.net/) or newer are required.
+In order to build GDET, [Apache Maven 3.6.0](http://maven.apache.org/) or newer and [OpenJDK 10](https://openjdk.java.net/) or newer are required.
 
 Execution is possible on Java runtime environments implementing Java 8 or newer.
 
